@@ -1,0 +1,17 @@
+{
+  "culture": "es",
+  "texts": {
+    "Menu:Home": "Inicio",
+    "Welcome": "Bienvenido",
+    "LongWelcomeMessage": "Bienvenido a la aplicación, este es un proyecto base basado en el framework ABP. Para más información, visita abp.io.",
+    "Enum:ProductoType.0":  "Comida",
+    "Enum:ProductoType.1":  "Juguete",
+    "Enum:ProductoType.2": "Equipamiento",
+    "Enum:MascotaType.0": "Perro",
+    "Enum:MascotaType.1": "Gato",
+    "ProductoType": "Producto",
+    "MascotaType": "Mascota",
+    "Menu:Cesta": "Tienda",
+    "Menu:Productos": "Catálogo"
+  }
+}

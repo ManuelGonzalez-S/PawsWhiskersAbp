@@ -1,0 +1,36 @@
+﻿@page
+@using Cesta.Localization
+@using Cesta.Permissions
+@using Cesta.Web.Pages.Productos
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Authorization
+@model IndexModel
+@inject IStringLocalizer<CestaResource> L
+@inject IAuthorizationService AuthorizationService
+@section scripts
+{
+    <abp-script src="/Pages/Productos/Index.js" />
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Productos"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                
+                @if(await AuthorizationService.IsGrantedAsync(CestaPermissions.Productos.Create))
+                {
+                    <abp-button id="NewProductoButton"
+                                text="@L["NewProducto"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="ProductosTable"></abp-table>
+    </abp-card-body>
+</abp-card>
