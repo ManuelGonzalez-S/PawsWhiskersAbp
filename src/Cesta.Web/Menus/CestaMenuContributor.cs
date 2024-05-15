@@ -25,6 +25,8 @@ public class CestaMenuContributor : IMenuContributor
         var administration = context.Menu.GetAdministration();
         var l = context.GetLocalizer<CestaResource>();
 
+        administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
+
         context.Menu.Items.Insert(
             0,
             new ApplicationMenuItem(
@@ -36,32 +38,15 @@ public class CestaMenuContributor : IMenuContributor
             )
         );
 
-        if (MultiTenancyConsts.IsEnabled)
-        {
-            administration.SetSubItemOrder(TenantManagementMenuNames.GroupName, 1);
-        }
-        else
-        {
-            administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
-        }
-
         administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
-
-        context.Menu.AddItem(
-            new ApplicationMenuItem(
-                "Cesta",
-                l["Menu:Cesta"],
-                icon: "fa fa-book"
-            ).AddItem(
-                new ApplicationMenuItem(
-                    "Cesta.Productos",
-                    l["Menu:Productos"],
-                    icon: "fas fa-shopping-basket",
-                    url: "/Productos"
-                ).RequirePermissions(CestaPermissions.Productos.Default)
-            )
-        );
+        administration.AddItem(new ApplicationMenuItem(
+                "Productos",
+                l["Menu:CRUDProductos"],
+                url: "/Productos",
+                icon: "fas fa-shopping-basket",
+                order: 0
+            ).RequirePermissions(CestaPermissions.Productos.Default));
 
 
         return Task.CompletedTask;
