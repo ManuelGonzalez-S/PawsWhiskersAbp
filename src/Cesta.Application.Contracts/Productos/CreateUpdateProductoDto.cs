@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Cesta.Productos
 {
     public class CreateUpdateProductoDto
     {
-
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
@@ -22,7 +19,6 @@ namespace Cesta.Productos
 
         public float? Price { get; set; } = 0.00f;
 
-        public string? NombreImagen { get; set; }
-
+        public string? ImageBase64 { get; set; }
     }
 }

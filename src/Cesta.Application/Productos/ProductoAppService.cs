@@ -1,4 +1,5 @@
-﻿using Cesta.Permissions;
+﻿using AutoMapper;
+using Cesta.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,11 @@ namespace Cesta.Productos
 
     {
 
-        public ProductoAppService(IRepository<Producto, Guid> repository) : base(repository)
+        private readonly IProductoAppService _productoAppService;
+
+        public IMapper _mapper;
+
+        public ProductoAppService(IRepository<Producto, Guid> repository, IMapper mapper) : base(repository)
         {
             GetPolicyName = CestaPermissions.Productos.Default;
             GetListPolicyName = CestaPermissions.Productos.Default;
@@ -31,8 +36,8 @@ namespace Cesta.Productos
             UpdatePolicyName = CestaPermissions.Productos.Edit;
             DeletePolicyName = CestaPermissions.Productos.Delete;
 
+            _mapper = mapper;
+
         }
-
-
     }
 }

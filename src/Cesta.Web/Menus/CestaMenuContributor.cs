@@ -27,6 +27,18 @@ public class CestaMenuContributor : IMenuContributor
 
         administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
 
+        //Menus bajo carpeta administration
+        administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
+        administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
+        administration.AddItem(new ApplicationMenuItem(
+                "Productos",
+                l["Menu:CRUDProductos"],
+                url: "/ProductosCrud",
+                icon: "fas fa-shopping-basket",
+                order: 0
+            ).RequirePermissions(CestaPermissions.Productos.Default));
+
+        //Menus tipo boton (Home va en la posicion 0)
         context.Menu.Items.Insert(
             0,
             new ApplicationMenuItem(
@@ -38,16 +50,14 @@ public class CestaMenuContributor : IMenuContributor
             )
         );
 
-        administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
-        administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
-        administration.AddItem(new ApplicationMenuItem(
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
                 "Productos",
-                l["Menu:CRUDProductos"],
-                url: "/Productos",
-                icon: "fas fa-shopping-basket",
-                order: 0
-            ).RequirePermissions(CestaPermissions.Productos.Default));
-
+                l["Menu:Productos"],
+                "/Productos",
+                icon: "fas fa-list-ol"
+            )
+        );
 
         return Task.CompletedTask;
     }

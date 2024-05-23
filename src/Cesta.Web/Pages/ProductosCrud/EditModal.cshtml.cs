@@ -4,7 +4,7 @@ using Cesta.Productos;
 using AutoMapper.Internal.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cesta.Web.Pages.Productos;
+namespace Cesta.Web.Pages.ProductosCrud;
 
 public class EditModalModel : CestaPageModel
 {

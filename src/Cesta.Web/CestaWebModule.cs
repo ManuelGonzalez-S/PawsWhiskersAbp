@@ -41,6 +41,9 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Cesta.Permissions;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using System;
 
 namespace Cesta.Web;
 
@@ -102,6 +105,15 @@ public class CestaWebModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+
+
+
+        // Configurar Firebase Admin SDK
+        FirebaseApp.Create(new AppOptions()
+        {
+            Credential = GoogleCredential.FromFile("pawswhiskers-79511-firebase-adminsdk-ae4wa-0fab6b1b8b.json")
+        });
+
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
