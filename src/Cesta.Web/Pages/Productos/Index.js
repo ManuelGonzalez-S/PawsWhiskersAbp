@@ -15,7 +15,7 @@ $(function () {
                                     <p class="card-text">Para: ${l('Enum:MascotaType.' + record.mascotaType)}</p>
                                     <p class="card-text">Tipo: ${l('Enum:ProductoType.' + record.productoType)}</p>
                                     <p class="card-text">Precio: ${record.price}€</p>
-                                    <button class="btnAgregarCesta" onclick="sumarNotificationCount(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</button>
+                                    <button class="btnAgregarCesta"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</button>
                                 </div>
                             </div>
                         </div>
