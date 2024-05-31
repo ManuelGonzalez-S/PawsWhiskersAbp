@@ -38,18 +38,25 @@
                 <abp-card-title>@L["Productos"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-                <abp-button id="btn-notification">
-                    <!-- Icono de cesta SOLO lineas sin relleno -->
-                    @* <i class="bi bi-cart"></i> *@
-                    <i class="fas fa-shopping-cart"></i> Cesta
-                    <span id="notification-count" class="notification-count">0</span>
-                </abp-button>
+
+                <div id="sectionCesta">
+                    <abp-button id="btn-notification">
+                        <i class="fas fa-shopping-cart"></i> Cesta
+                        <span id="notification-count" class="notification-count">0</span>
+                    </abp-button>
+                    <div id="notification-popup">0</div>
+                </div>
+
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
 
+        <div id="loadingGif" style="display: none;">
+            <i class="fas fa-spinner fa-pulse fa-lg"></i>
+        </div>
         <div id="cardContainer" class="row"></div>
+
 
     </abp-card-body>
 </abp-card>

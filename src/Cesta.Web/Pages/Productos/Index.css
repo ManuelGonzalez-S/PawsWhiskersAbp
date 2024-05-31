@@ -2,6 +2,11 @@ body {
     
 }
 
+#loadingGif {
+    display: flex;
+    justify-content: center;
+}
+
 .cardProducto {
     background-color: rgba(245, 245, 220, 1);
     border-radius: 20px;
@@ -31,12 +36,21 @@ body {
 }
 
 .btnAgregarCesta {
-    transition: transform 0.3s linear, background-color 0.3s linear, border-color 0.08s linear;
+    transition: transform 0.3s linear, background-color 0.3s linear, border-color 0.08s linear, color 0.3s linear;
     width: 50%;
     margin-top: 10px;
     border: 2px solid transparent;
     background-color: rgb(173, 216, 230);
     border-radius: 10px;
+}
+
+.btnAgregarCesta.active {
+    background-color: rgb(11, 102, 195);
+    color: white;
+}
+
+.btnAgregarCesta.active:hover {
+    background-color: rgb(10, 90, 171);
 }
 
 .btnAgregarCesta:hover {
@@ -46,6 +60,17 @@ body {
 
 .btnAgregarCesta:active {
     border-color: black;
+}
+
+.text-end.col-md-6{
+    display: flex;
+    justify-content: flex-end;
+}
+
+#sectionCesta {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #btn-notification {
@@ -81,3 +106,27 @@ body {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
+
+/* Estilo para la ventana emergente */
+#notification-popup {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    display: none; /* Empieza oculto */
+    z-index: 999; /* Asegura que esté sobre otros elementos */
+}
+
+/* Triángulo apuntando hacia arriba */
+#notification-popup::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
