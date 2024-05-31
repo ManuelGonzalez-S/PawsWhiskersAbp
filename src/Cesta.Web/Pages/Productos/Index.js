@@ -1,4 +1,4 @@
-$(function () {
+$(async function () {
     var l = abp.localization.getResource('Cesta');
 
     function renderCards(data) {
@@ -7,43 +7,44 @@ $(function () {
 
         data.items.forEach(function (record) {
             var card = `
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body cardProducto">
-                                    <img class="imagenProducto" src="data:image/png;base64,${record.imageBase64}" class="card-img-top" alt="${record.name}">
-                                    <h5 class="card-title">${record.name}</h5>
-                                    <p class="card-text">Para: ${l('Enum:MascotaType.' + record.mascotaType)}</p>
-                                    <p class="card-text">Tipo: ${l('Enum:ProductoType.' + record.productoType)}</p>
-                                    <p class="card-text">Precio: ${record.price}€</p>
-                                    <button class="btnAgregarCesta"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</button>
-                                </div>
-                            </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body cardProducto">
+                            <img class="imagenProducto" src="data:image/png;base64,${record.imageBase64}" class="card-img-top" alt="${record.name}">
+                            <h5 class="card-title">${record.name}</h5>
+                            <p class="card-text">Para: ${l('Enum:MascotaType.' + record.mascotaType)}</p>
+                            <p class="card-text">Tipo: ${l('Enum:ProductoType.' + record.productoType)}</p>
+                            <p class="card-text">Precio: ${record.price}€</p>
+                            <button class="btnAgregarCesta" onclick="sumarNotificationCount(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</button>
                         </div>
-                    `;
+                    </div>
+                </div>
+            `;
             cardContainer.append(card);
         });
-
     }
 
-    function loadCards() {
+    async function loadCards() { // Hacemos loadCards asíncrona
         var params = {
             skipCount: 0,
             maxResultCount: 10,
             sorting: 'name asc'
         };
 
+        // Muestra el GIF de carga
+        $('#loadingGif').show();
+
+        // Espera de 2 segundos (2000 ms)
+        await new Promise(resolve => setTimeout(resolve, 10000));
+
         cesta.productos.producto.getList(params).then(function (result) {
             renderCards(result);
+            // Oculta el GIF de carga
+            $('#loadingGif').hide();
         });
     }
 
-    loadCards(); // Inicializa la carga de cards
-
-    const myButton = document.getElementById('btn-notification');
-    myButton.addEventListener('click', () => {
-        alert('Button clicked!');
-        // Aquí puedes añadir la función que deseas ejecutar
-    });
+    await loadCards(); // Usa await para esperar a que loadCards se complete
 
     // Simula la actualización del número en el botón
     function updateNotificationCount(count) {
@@ -67,8 +68,6 @@ $(function () {
         cantidad++;
         // Actualizar el texto mostrando la nueva cantidad
         cantidadElement.textContent = cantidad;
-
-        console.log(boton.id);
     }
 
     function restarNotificationCount(boton) {
@@ -84,4 +83,33 @@ $(function () {
         }
     }
 
+    const myButton = document.getElementById('btn-notification');
+    myButton.addEventListener('click', () => {
+        alert('Button clicked!');
+        // Aquí puedes añadir la función que deseas ejecutar
+    });
+
+    // Asegúrate de que los botones sean seleccionados después de que las tarjetas se hayan renderizado
+    $(document).on('click', '.btnAgregarCesta', function () {
+        var cantidadElement = document.getElementById('notification-count');
+
+        console.log(cantidadElement);
+
+        // Obtener el valor actual de la cantidad
+        var cantidad = parseInt(cantidadElement.textContent);
+        // Sumar uno a la cantidad
+        cantidad++;
+        // Actualizar el texto mostrando la nueva cantidad
+        cantidadElement.textContent = cantidad;
+
+        // Alternar clase para cambiar estilo
+        $(this).toggleClass('active');
+
+        // Cambiar el texto del botón (opcional)
+        if ($(this).hasClass('active')) {
+            $(this).html('<i class="fas fa-check"></i> Agregado');
+        } else {
+            $(this).html('<i class="fas fa-shopping-basket"></i> Agregar a la cesta');
+        }
+    });
 });
