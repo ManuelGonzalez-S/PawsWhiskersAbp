@@ -82,6 +82,8 @@ body {
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s linear, background-color 0.3s linear, border-color 0.3s linear;
+    text-decoration: none;
+    color: rgb(135, 121, 110);
 }
 
 #btn-notification:hover {

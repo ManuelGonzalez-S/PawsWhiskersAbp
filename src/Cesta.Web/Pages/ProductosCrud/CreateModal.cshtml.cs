@@ -45,9 +45,6 @@ namespace Cesta.Web.Pages.ProductosCrud
                 base64String = Convert.ToBase64String(bytes);
             }
 
-            Console.Write(auxiliar);
-            Console.Write(base64String);
-
             Producto.ImageBase64 = base64String;
 
             // Verificar el valor de ImageBase64 en el lado del servidor

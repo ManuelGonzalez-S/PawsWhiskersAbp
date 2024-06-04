@@ -13,6 +13,9 @@
         <abp-modal-header title="@L["NewProducto"].Value"></abp-modal-header>
         <abp-modal-body>
             <abp-form-content />
+
+            <input asp-for="Producto.ImageBase64" hidden />
+
             <div class="form-group">
                 <label>@L["Image"]</label>
                 <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" asp-for="auxiliar" />
