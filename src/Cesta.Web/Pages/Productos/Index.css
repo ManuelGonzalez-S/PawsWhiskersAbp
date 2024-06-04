@@ -105,28 +105,3 @@ body {
     border: 2px solid white;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
-
-
-/* Estilo para la ventana emergente */
-#notification-popup {
-    position: absolute;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
-    display: none; /* Empieza oculto */
-    z-index: 999; /* Asegura que esté sobre otros elementos */
-}
-
-/* Triángulo apuntando hacia arriba */
-#notification-popup::before {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent #ffffff transparent;
-}

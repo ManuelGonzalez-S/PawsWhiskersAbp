@@ -1,4 +1,5 @@
-﻿using Cesta.Productos;
+﻿using Cesta.Pedidos;
+using Cesta.Productos;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -85,6 +86,13 @@ public class CestaDbContext :
             b.ToTable("Productos");
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+        });
+
+        builder.Entity<Pedido>(b =>
+        {
+            b.ToTable("Pedidos");
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Cantidad).IsRequired();
         });
 
     }

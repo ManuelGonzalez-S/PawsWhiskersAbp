@@ -20,5 +20,7 @@ namespace Cesta.Productos
 
         public string? ImageBase64 { get; set; }
 
+        public bool enCarrito { get; set; }
+
     }
 }
