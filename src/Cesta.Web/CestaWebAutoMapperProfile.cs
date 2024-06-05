@@ -9,5 +9,6 @@ public class CestaWebAutoMapperProfile : Profile
     {
         //Define your AutoMapper configuration here for the Web project.
         CreateMap<ProductoDto, CreateUpdateProductoDto>();
+
     }
 }

@@ -1,0 +1,53 @@
+﻿@page
+@using Cesta.Localization
+@using Cesta.Permissions
+@using Cesta.Web.Pages.Productos
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Authorization
+@model Cesta.Web.Pages.Cesta.IndexModel
+@inject IStringLocalizer<CestaResource> L
+@section scripts
+{
+    <abp-script src="/Pages/Cesta/Index.js" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+}
+@section styles {
+    <abp-style src="/Pages/Cesta/Index.css" />
+}
+
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+@* <script type="module" src="./Pages/ProductosCrud/firebase.js"></script> *@
+
+<script>
+
+    // import { getDatabase, ref, child, get } from 'firebase/database';
+    // Follow this pattern to import other Firebase services
+    // import { } from 'firebase/<service>';
+
+    // TODO: Replace the following with your app's Firebase project configuration
+
+
+</script>
+
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Cesta"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+
+        <div id="loadingGif" style="display: none;">
+            <i class="fas fa-spinner fa-pulse fa-lg"></i>
+        </div>
+        <div id="cardContainer" class="row"></div>
+
+
+    </abp-card-body>
+</abp-card>

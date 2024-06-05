@@ -1,4 +1,5 @@
-﻿using Cesta.Permissions;
+﻿using AutoMapper;
+using Cesta.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,16 +24,20 @@ namespace Cesta.Productos
 
     {
 
-        public ProductoAppService(IRepository<Producto, Guid> repository) : base(repository)
-        {
-            GetPolicyName = CestaPermissions.Productos.Default;
-            GetListPolicyName = CestaPermissions.Productos.Default;
-            CreatePolicyName = CestaPermissions.Productos.Create;
-            UpdatePolicyName = CestaPermissions.Productos.Edit;
-            DeletePolicyName = CestaPermissions.Productos.Delete;
+        private readonly IRepository<Producto, Guid> _productoRepository;
+        private readonly IMapper _mapper;
 
+        public ProductoAppService(IRepository<Producto, Guid> repository, IMapper mapper)
+            : base(repository)
+        {
+            _productoRepository = repository;
+            _mapper = mapper;
         }
 
-
+        public async Task<List<ProductoDto>> ListAsync()
+        {
+            var productos = await _productoRepository.GetListAsync(); // Llamada asíncrona para obtener productos
+            return _mapper.Map<List<Producto>, List<ProductoDto>>(productos); // Mapeo de productos a ProductoDto
+        }
     }
 }

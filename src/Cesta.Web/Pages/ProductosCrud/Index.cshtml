@@ -1,0 +1,57 @@
+﻿@page
+@using Cesta.Localization
+@using Cesta.Permissions
+@using Cesta.Web.Pages.ProductosCrud
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Authorization
+@model IndexModel
+@inject IStringLocalizer<CestaResource> L
+@inject IAuthorizationService AuthorizationService
+@section scripts
+{
+    <abp-script src="/Pages/ProductosCrud/Index.js" />
+}
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+<script type="module" src="./Pages/ProductosCrud/firebase.js"></script>
+
+<script>
+
+    // import { getDatabase, ref, child, get } from 'firebase/database';
+    // Follow this pattern to import other Firebase services
+    // import { } from 'firebase/<service>';
+
+    // TODO: Replace the following with your app's Firebase project configuration
+    
+
+</script>
+
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Productos"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                
+                @if(await AuthorizationService.IsGrantedAsync(CestaPermissions.Productos.Create))
+                {
+                    <abp-button id="NewProductoButton"
+                                text="@L["NewProducto"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="ProductosTable"></abp-table>
+
+        <div id="cardsProductos"></div>
+
+        @* <abp-button onclick="readData()" text="Leer Datos" /> *@
+
+    </abp-card-body>
+</abp-card>

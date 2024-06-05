@@ -1,0 +1,45 @@
+﻿@page
+@using Cesta.Localization
+@using Cesta.Web.Pages.ProductosCrud
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model CreateModalModel
+@inject IStringLocalizer<CestaResource> L
+@{
+    Layout = null;
+}
+<abp-dynamic-form abp-model="Producto" asp-page="/ProductosCrud/CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@L["NewProducto"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-form-content />
+
+            <input asp-for="Producto.ImageBase64" hidden />
+
+            <div class="form-group">
+                <label>@L["Image"]</label>
+                <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" asp-for="auxiliar" />
+            </div>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</abp-dynamic-form>
+
+@section Scripts {
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                    const base64String = reader.result.split(',')[1];
+                    document.querySelector('[name="Producto.ImageBase64"]').value = base64String;
+                    console.log(base64String); // Verifica el valor en la consola del navegador
+                }
+                reader.readAsDataURL(file);
+            }
+
+            console.log(this);
+        });
+    </script>
+}

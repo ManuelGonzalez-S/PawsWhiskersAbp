@@ -70,3 +70,7 @@ $(function () {
     
 
 });
+
+function sendEmail() {
+    window.location.href = "mailto:pawswhiskers69@gmail.com";
+}
