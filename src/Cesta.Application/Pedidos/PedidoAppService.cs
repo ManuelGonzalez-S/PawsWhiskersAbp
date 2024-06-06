@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using Cesta.Permissions;
 using System;
 using System.Collections.Generic;
@@ -12,26 +13,19 @@ using Volo.Abp.Users;
 
 namespace Cesta.Pedidos
 {
-    public class PedidoAppService :
-
-
-        CrudAppService<
-            Pedido, 
-            PedidoDto, 
-            Guid, 
-            PagedAndSortedResultRequestDto, //Used for paging/sorting
-            CreateUpdatePedidoDto>, //Used to create/update a producto
-        IPedidoAppService
+    public class PedidoAppService : IPedidoAppService
 
     {
 
-        private readonly IPedidoAppService _pedidoAppService;
+        private readonly IPedidoAppRepository _pedidoAppRepository;
+
+        private readonly PedidoManager _pedidoManager;
 
         private readonly ICurrentUser _currentUser;
 
         public IMapper _mapper;
 
-        public PedidoAppService(IRepository<Pedido, Guid> repository, IMapper mapper, ICurrentUser currentUser) : base(repository)
+        public PedidoAppService(IRepository<Pedido, Guid> repository, IMapper mapper, ICurrentUser currentUser, PedidoManager pedidoManager)
         {
             //GetPolicyName = CestaPermissions.Productos.Default;
             //GetListPolicyName = CestaPermissions.Productos.Default;
@@ -43,6 +37,42 @@ namespace Cesta.Pedidos
 
             _currentUser = currentUser;
 
+            _pedidoManager = pedidoManager;
+
+        }
+
+        public async Task<PedidoDto> CreateAsync(PedidoDto dto)
+        {
+            var pedido = await _pedidoManager.CreateAsync(
+                dto.UsuarioId,
+                dto.Cantidad,
+                dto.ProductoId
+            );
+
+            await _pedidoAppRepository.InsertAsync(pedido);
+
+            return ObjectMapper.Map<Pedido, PedidoDto>(dto);
+
+        }
+
+        public Task<PedidoDto> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PedidoDto> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<PedidoDto>> GetByUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PedidoDto> UpdateAsync(Guid id, PedidoDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

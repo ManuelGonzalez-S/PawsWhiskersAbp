@@ -13,6 +13,8 @@ body {
 
     display: flex;
     flex-direction: column;
+
+    transition: transform linear 0.3s;
 }
 
 .cardProducto:hover {

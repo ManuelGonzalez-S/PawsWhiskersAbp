@@ -5,15 +5,18 @@ namespace Cesta.Productos
 {
     public class CreateUpdateProductoDto
     {
+
+        //PONER VALORES POR DEFECTO AQUÍ
+
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public ProductoType ProductoType { get; set; } = ProductoType.comida;
+        public ProductoType ProductoType { get; set; }
 
         [Required]
-        public MascotaType MascotaType { get; set; } = MascotaType.perro;
+        public MascotaType MascotaType { get; set; }
 
         public string Description { get; set; }
 
