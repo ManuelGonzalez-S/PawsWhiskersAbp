@@ -128,9 +128,9 @@ public class CestaWebModule : AbpModule
 
         Configure<RazorPagesOptions>(options =>
         {
-            options.Conventions.AuthorizePage("/Productos/Index", CestaPermissions.Productos.Default);
-            options.Conventions.AuthorizePage("/Productos/CreateModal", CestaPermissions.Productos.Create);
-            options.Conventions.AuthorizePage("/Productos/EditModal", CestaPermissions.Productos.Edit);
+            options.Conventions.AuthorizePage("/ProductosCrud/Index", CestaPermissions.Productos.Default);
+            options.Conventions.AuthorizePage("/ProductosCrud/CreateModal", CestaPermissions.Productos.Create);
+            options.Conventions.AuthorizePage("/ProductosCrud/EditModal", CestaPermissions.Productos.Edit);
         });
     }
 

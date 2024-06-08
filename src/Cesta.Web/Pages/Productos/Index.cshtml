@@ -11,25 +11,13 @@
     <abp-script src="/Pages/Productos/Index.js" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 }
-@section styles{
+
+@section styles {
     <abp-style src="/Pages/Productos/Index.css" />
 }
 
 <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
 <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
-@* <script type="module" src="./Pages/ProductosCrud/firebase.js"></script> *@
-
-<script>
-
-    // import { getDatabase, ref, child, get } from 'firebase/database';
-    // Follow this pattern to import other Firebase services
-    // import { } from 'firebase/<service>';
-
-    // TODO: Replace the following with your app's Firebase project configuration
-
-
-</script>
-
 
 <abp-card>
     <abp-card-header>
@@ -38,54 +26,57 @@
                 <abp-card-title>@L["Productos"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-
-
                 @if (User.Identity.IsAuthenticated)
                 {
-                     <div id="sectionCesta">
+                    <div id="sectionCesta">
                         <a href="/Cesta" id="btn-notification">
                             <i class="fas fa-shopping-cart"></i> Cesta
                             <span id="notification-count" class="notification-count">0</span>
                         </a>
                     </div>
                 }
-
-               
-
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
-
         <div id="loadingGif" style="display: none;">
             <i class="fas fa-spinner fa-pulse fa-lg"></i>
         </div>
 
         <div id="listaProductos" style="display:none;">
-            @foreach (var producto in Model.ListaProductos)
+            @if (Model.ListaProductos.Count > 0)
             {
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body cardProducto">
-                            <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@producto.ImageBase64" class="card-img-top" alt="${record.name}">
-                            <h5 class="card-title">@producto.Name</h5>
-                            <p class="card-text">Descripcion: @producto.Description</p>
-                            <p class="card-text">Para: @producto.MascotaType</p>
-                            <p class="card-text">Tipo: @producto.ProductoType</p>
-                            <p class="card-text">Precio: @producto.Price€</p>
+                @foreach (var producto in Model.ListaProductos)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body cardProducto">
+                                <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@producto.ImageBase64" class="card-img-top">
+                                <h5 class="card-title">@producto.Name</h5>
+                                <p class="card-text">Descripcion: @producto.Description</p>
+                                <p class="card-text">Para: @producto.MascotaType</p>
+                                <p class="card-text">Tipo: @producto.ProductoType</p>
+                                <p class="card-text">Precio: @producto.Price€</p>
 
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</button>
-                            }
-
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
+                                        <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</abp-button>
+                                    </a>
+                                }
+                            </div>
                         </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div id="MensajeSinProductosCatalogo" class="col-md-4">
+                    <div id="textoSinproductosCatalogo">
+                        <p id="pSinProductosCatalogo">No hay productos en el catálogo</p>
                     </div>
                 </div>
             }
         </div>
-        
-
-
     </abp-card-body>
 </abp-card>

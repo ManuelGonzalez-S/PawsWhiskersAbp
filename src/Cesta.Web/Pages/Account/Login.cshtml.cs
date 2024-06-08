@@ -7,7 +7,7 @@ namespace Cesta.Web.Account
     public class IndexModel : PageModel
     {
 
-        public void OnGet(IEmailSender emailSender)
+        public void OnGet()
         {
             
         }
