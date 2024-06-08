@@ -30,6 +30,8 @@ public class CestaDbContext :
 
     public DbSet<Producto> Productos { get; set; }
 
+    public DbSet<Pedido> Pedidos { get; set; }
+
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext

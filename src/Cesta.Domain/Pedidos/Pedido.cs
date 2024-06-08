@@ -24,6 +24,10 @@ namespace Cesta.Pedidos
             ProductoId = productoId;
         }
 
+        public Pedido()
+        {
+        }
+
         internal Pedido ChangeCantidad(int Cantidad)
         {
             SetCantidad(Cantidad);

@@ -7,13 +7,29 @@ body {
     justify-content: center;
 }
 
+#MensajeSinProductosCatalogo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#textoSinproductosCatalogo {
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+#pSinProductosCatalogo{
+    margin: 5%;
+    padding: 0px;
+    text-align: center;
+}
+
 .cardProducto {
     background-color: rgba(245, 245, 220, 1);
     border-radius: 20px;
-
     display: flex;
     flex-direction: column;
-
     transition: transform linear 0.3s;
 }
 
@@ -35,6 +51,11 @@ body {
 
 .card-text{
     margin-bottom: 5px !important;
+}
+
+.enlAgregarCesta:hover {
+    text-decoration: none;
+    color: rgb(104, 107, 110);
 }
 
 .btnAgregarCesta {

@@ -38,13 +38,19 @@ namespace Cesta.Productos
             _currentUser = currentUser;
         }
 
+        public async Task<ProductoDto> GetByIdAsync(Guid id)
+        {
+            var productosList = await _productoRepository.GetListAsync();
+            var producto = productosList.FirstOrDefault(x => x.Id == id);
+            return _mapper.Map<Producto, ProductoDto>(producto);
+        }
+
         public async Task<List<ProductoDto>> ListAsync()
         {
             var productos = await _productoRepository.GetListAsync(); // Llamada asíncrona para obtener productos
             return _mapper.Map<List<Producto>, List<ProductoDto>>(productos); // Mapeo de productos a ProductoDto
         }
 
-        
 
     }
 }

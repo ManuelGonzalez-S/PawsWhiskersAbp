@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cesta.Productos;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,17 +8,21 @@ using Volo.Abp.Application.Services;
 
 namespace Cesta.Pedidos
 {
-    public interface IPedidoAppService : IApplicationService
+    public interface IPedidoAppService : ICrudAppService< //Defines CRUD methods
+        PedidoDto, //Used to show products
+        Guid, //Primary key of the product entity
+        PagedAndSortedResultRequestDto, //Used for paging/sorting
+        CreateUpdatePedidoDto>
     {
         Task<PedidoDto> GetById(int id);
 
-        Task<List<PedidoDto>> GetByUserId(int userId);
+        Task<List<PedidoDto>> GetByUserId(Guid userId);
 
-        Task<PedidoDto> CreateAsync(PedidoDto dto);
+        Task<PedidoDto> CreateAsync(int idProducto);
 
-        Task<PedidoDto> UpdateAsync(Guid id, PedidoDto dto);
+        Task UpdateAsync(Guid id, PedidoDto dto);
 
-        Task<PedidoDto> DeleteAsync(Guid id);
+        Task DeleteAsync(Guid id);
 
     }
 }
