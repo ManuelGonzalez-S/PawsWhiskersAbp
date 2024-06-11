@@ -47,26 +47,22 @@
             @if (Model.ListaProductos.Count > 0)
             {
                 @foreach (var producto in Model.ListaProductos)
-                {
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-body cardProducto">
-                                <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@producto.ImageBase64" class="card-img-top">
-                                <h5 class="card-title">@producto.Name</h5>
-                                <p class="card-text">Descripcion: @producto.Description</p>
-                                <p class="card-text">Para: @producto.MascotaType</p>
-                                <p class="card-text">Tipo: @producto.ProductoType</p>
-                                <p class="card-text">Precio: @producto.Price€</p>
+                { 
+                    <div class="card-body cardProducto">
+                        <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@producto.ImageBase64" class="card-img-top">
+                        <h5 class="card-title">@producto.Name</h5>
+                        <p class="card-text">Descripcion: @producto.Description</p>
+                        <p class="card-text">Para: @producto.MascotaType</p>
+                        <p class="card-text">Tipo: @producto.ProductoType</p>
+                        <p class="card-text">Precio: @producto.Price€</p>
 
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
-                                        <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</abp-button>
-                                    </a>
-                                }
-                            </div>
-                        </div>
-                    </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
+                                <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</abp-button>
+                            </a>
+                        }
+                    </div>  
                 }
             }
             else

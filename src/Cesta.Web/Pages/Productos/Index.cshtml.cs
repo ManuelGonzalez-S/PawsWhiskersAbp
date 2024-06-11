@@ -16,7 +16,6 @@ namespace Cesta.Web.Pages.Productos
     {
         #region Binding
         private readonly IProductoAppService _productoAppService;
-        private readonly IPedidoAppService _pedidoAppService;
         private readonly ILogger<IndexModel> _logger;
 
         public List<ProductoDto> ListaProductos { get; set; } = new List<ProductoDto>();
@@ -24,10 +23,9 @@ namespace Cesta.Web.Pages.Productos
 
         #region Constructor
 
-        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService, ILogger<IndexModel> logger)
+        public IndexModel(IProductoAppService productoAppService, ILogger<IndexModel> logger)
         {
             _productoAppService = productoAppService;
-            _pedidoAppService = pedidoAppService;
             _logger = logger;
         }
 
