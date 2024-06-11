@@ -10,15 +10,15 @@
 }
 
 <script>
-    function cambiarBase64() {
+    function cambiarBase64(event) {
         debugger;
-        const file = this.files[0];
+        const fileInput = event.target;
+        const file = fileInput.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = function () {
                 const base64String = reader.result.split(',')[1];
                 document.getElementById('imageBase64').value = base64String;
-                alert(base64String); // Mostrar alerta con el valor base64
             }
             reader.readAsDataURL(file);
         } else {
@@ -38,7 +38,7 @@
                 <span class="text-danger" asp-validation-for="Producto.Name"></span>
             </div>
 
-            <!-- Campo DescripciÃ³n -->
+            <!-- Campo Descripción -->
             <div class="form-group">
                 <label for="descripcion">@L["Descripcion"]</label>
                 <textarea class="form-control" id="descripcion" asp-for="Producto.Description"></textarea>
@@ -71,8 +71,8 @@
             <!-- Campo Imagen -->
             <div class="form-group">
                 <label for="imageUpload">@L["Image"]</label>
-                <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" onchange="cambiarBase64()" />
-                <input id="imageBase64" type="text" name="Producto.ImageBase64" asp-for="Producto.ImageBase64" />
+                <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" onchange="cambiarBase64(event)" />
+                <input id="imageBase64" type="text" name="Producto.ImageBase64" asp-for="Producto.ImageBase64" hidden/>
                 <span class="text-danger" asp-validation-for="auxiliar"></span>
             </div>
 

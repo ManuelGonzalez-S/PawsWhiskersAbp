@@ -59,10 +59,6 @@ $(function () {
         }
     });
 
-    var greenIcon = new LeafIcon({ iconUrl: 'leaf-green.png' }),
-        redIcon = new LeafIcon({ iconUrl: 'leaf-red.png' }),
-        orangeIcon = new LeafIcon({ iconUrl: 'leaf-orange.png' });
-
     L.marker([51.5, -0.09], { icon: greenIcon }).addTo(map);
 
     L.marker([51.5, -0.09], { icon: greenIcon }).addTo(map).bindPopup("I am a green leaf.");
