@@ -10,6 +10,14 @@ namespace Cesta.Web.Pages.ProductosCrud
 {
     public class IndexModel : PageModel
     {
+
+        private readonly IProductoAppService _productoAppService;
+
+        public IndexModel(IProductoAppService productoAppService)
+        {
+            _productoAppService = productoAppService;
+        }
+
         public void OnGet()
         {
         }
@@ -21,26 +29,10 @@ namespace Cesta.Web.Pages.ProductosCrud
                 return Page();
             }
 
-            string base64String;
+            //Lógica para guardar el producto
+            //await _productoAppService.CreateAsync(producto);
 
-            //if (auxiliar != null)
-            //{
-            //    using (var memoryStream = new MemoryStream())
-            //    {
-            //        await auxiliar.CopyToAsync(memoryStream);
-            //        byte[] bytes = memoryStream.ToArray();
-            //        base64String = Convert.ToBase64String(bytes);
-            //    }
-
-            //    Producto.ImageBase64 = base64String;
-            //}
-
-            // Lógica para guardar el producto
-
-            //await _productoAppService.CreateAsync(Producto);
-            //return RedirectToPage("/ProductosCrud/Index");
-
-            return Page();
+            return RedirectToPage("/ProductosCrud/Index");
 
         }
     }
