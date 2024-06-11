@@ -8,6 +8,26 @@
 @{
     Layout = null;
 }
+
+<script>
+    function cambiarBase64() {
+        debugger;
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const base64String = reader.result.split(',')[1];
+                document.getElementById('imageBase64').value = base64String;
+                alert(base64String); // Mostrar alerta con el valor base64
+            }
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('imageBase64').value = "";
+            alert("No file selected or file reading failed.");
+        }
+    }
+</script>
+
 <abp-modal>
     <abp-modal-header title="@L["NewProducto"].Value"></abp-modal-header>
     <abp-modal-body>
@@ -63,24 +83,3 @@
         </form>
     </abp-modal-body>
 </abp-modal>
-
-@section Scripts {
-    <script>
-        function cambiarBase64() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function () {
-                    const base64String = reader.result.split(',')[1];
-                    document.getElementById('imageBase64').value = base64String;
-                    alert(base64String); // Mostrar alerta con el valor base64
-                }
-                reader.readAsDataURL(file);
-            } else {
-                document.getElementById('imageBase64').value = "";
-                alert("No file selected or file reading failed.");
-            }
-        }
-    </script>
-
-}
