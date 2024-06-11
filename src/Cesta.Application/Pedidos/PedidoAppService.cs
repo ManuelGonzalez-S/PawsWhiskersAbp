@@ -31,7 +31,7 @@ namespace Cesta.Pedidos
 
         public IMapper _mapper;
 
-        public PedidoAppService(IMapper mapper, IRepository<Pedido, Guid> pedidoAppRepository, ICurrentUser currentUser, IProductoAppService productoAppService)
+        public PedidoAppService(IRepository<Pedido, Guid> repository, IMapper mapper, ICurrentUser currentUser, IProductoAppService productoAppService)
         {
             //GetPolicyName = CestaPermissions.Productos.Default;
             //GetListPolicyName = CestaPermissions.Productos.Default;
@@ -45,7 +45,7 @@ namespace Cesta.Pedidos
 
             _productoAppService = productoAppService;
 
-            _pedidoAppRepository = pedidoAppRepository;
+            _pedidoAppRepository = repository;
 
         }
 

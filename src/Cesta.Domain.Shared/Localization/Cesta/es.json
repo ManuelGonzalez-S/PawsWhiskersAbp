@@ -3,7 +3,8 @@
   "texts": {
     "Menu:Home": "Inicio",
     "Welcome": "Bienvenido",
-    "LongWelcomeMessage": "Bienvenido a la aplicación, este es un proyecto base basado en el framework ABP. Para más información, visita abp.io.",
+    "MensajeWelcome": "Bienvenidos a Paws & Whiskers",
+    "LongWelcomeMessage": "Paws & Whiskers nació de una pasión compartida por los fundadores: el amor por las mascotas y la falta de una plataforma que ofreciera tanto productos de alta calidad como una experiencia de compra personalizada y amigable con el medio ambiente. En un mercado saturado de opciones, notamos una clara necesidad de una tienda en línea que no solo vendiera productos para mascotas, sino que también comprendiera y priorizara las necesidades individuales de cada mascota y sus dueños.",
     "Enum:ProductoType.0": "Comida",
     "Enum:ProductoType.1": "Juguete",
     "Enum:ProductoType.2": "Equipamiento",
@@ -18,6 +19,11 @@
     "ProductoEditedSuccesfully": "Producto editado con éxito",
     "ProductoErasedSuccesfully": "Producto borrado con éxito",
     "ProductoCreatedSuccesfully": "Producto creado con éxito",
-    "Menu:Productos": "Productos" 
+    "Menu:Productos": "Productos",
+    "Permission:Cesta": "Permisos sobre el catálogo",
+    "Permission:Productos": "Permisos sobre los productos",
+    "Permission:Productos.Create": "Crear productos",
+    "Permission:Productos.Edit": "Editar los productos",
+    "Permission:Productos.Delete":  "Borrar productos"
   }
 }

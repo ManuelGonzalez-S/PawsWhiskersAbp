@@ -19,7 +19,7 @@ namespace Cesta.Web.Pages.Productos
         private readonly IPedidoAppService _pedidoAppService;
         private readonly ILogger<IndexModel> _logger;
 
-        public List<ProductoDto> ListaProductos { get; private set; } = new List<ProductoDto>();
+        public List<ProductoDto> ListaProductos { get; set; } = new List<ProductoDto>();
         #endregion
 
         #region Constructor
@@ -30,6 +30,12 @@ namespace Cesta.Web.Pages.Productos
             _pedidoAppService = pedidoAppService;
             _logger = logger;
         }
+
+        //public IndexModel(IProductoAppService productoAppService, ILogger<IndexModel> logger)
+        //{
+        //    _productoAppService = productoAppService;
+        //    _logger = logger;
+        //}
         #endregion
 
         #region Get
