@@ -38,7 +38,7 @@
                 <span class="text-danger" asp-validation-for="Producto.Name"></span>
             </div>
 
-            <!-- Campo Descripción -->
+            <!-- Campo DescripciÃ³n -->
             <div class="form-group">
                 <label for="descripcion">@L["Descripcion"]</label>
                 <textarea class="form-control" id="descripcion" asp-for="Producto.Description"></textarea>
@@ -83,3 +83,24 @@
         </form>
     </abp-modal-body>
 </abp-modal>
+
+@section Scripts {
+    <script>
+        function cambiarBase64() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                    const base64String = reader.result.split(',')[1];
+                    document.getElementById('imageBase64').value = base64String;
+                    alert(base64String); // Mostrar alerta con el valor base64
+                }
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imageBase64').value = "";
+                alert("No file selected or file reading failed.");
+            }
+        }
+    </script>
+
+}
