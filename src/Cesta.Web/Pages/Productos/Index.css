@@ -25,12 +25,20 @@ body {
     text-align: center;
 }
 
+#listaProductos {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 .cardProducto {
     background-color: rgba(245, 245, 220, 1);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     transition: transform linear 0.3s;
+    width: 30%;
+    margin: 5px;
 }
 
 .cardProducto:hover {

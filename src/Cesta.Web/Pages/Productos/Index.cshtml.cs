@@ -24,14 +24,7 @@ namespace Cesta.Web.Pages.Productos
 
         #region Constructor
 
-        //public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService, ILogger<IndexModel> logger)
-        //{
-        //    _productoAppService = productoAppService;
-        //    _pedidoAppService = pedidoAppService;
-        //    _logger = logger;
-        //}
-
-        public IndexModel(IProductoAppService productoAppService, ILogger<IndexModel> logger)
+        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService, ILogger<IndexModel> logger)
         {
             _productoAppService = productoAppService;
             _logger = logger;

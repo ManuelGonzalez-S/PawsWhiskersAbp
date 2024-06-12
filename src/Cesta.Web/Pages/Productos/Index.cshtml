@@ -80,15 +80,13 @@
                                 <p class="card-text">Tipo: @producto.ProductoType</p>
                                 <p class="card-text">Precio: @producto.Price€</p>
 
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
-                                        <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</abp-button>
-                                    </a>
-                                }
-                            </div>
-                        </div>
-                    </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
+                                <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</abp-button>
+                            </a>
+                        }
+                    </div>  
                 }
             }
             else
