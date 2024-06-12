@@ -82,9 +82,24 @@
 
 
 
-    createModal.onResult(function () {
-        dataTable.ajax.reload();
-        abp.notify.info(l('ProductoCreatedSuccesfully'));
+    createModal.onResult(function (event, jqXHR) {
+        // Asegúrate de estar obteniendo el JSON de la respuesta
+        const result = jqXHR.responseText;
+        console.log(result);
+
+        if (result.success) {
+            abp.notify.info(l('ProductoCreatedSuccesfully'));
+            dataTable.ajax.reload();
+        } else {
+            if (result.errors) {
+                // Mostrar todos los errores de validación
+                result.errors.forEach(function (error) {
+                    abp.notify.error(error);
+                });
+            } else {
+                abp.notify.error(result.message || l('UnexpectedError'));
+            }
+        }
     });
 
     editModal.onResult(function () {

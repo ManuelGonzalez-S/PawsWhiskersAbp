@@ -5,6 +5,8 @@ using System.IO;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Linq;
+using AutoMapper;
 
 namespace Cesta.Web.Pages.ProductosCrud
 {
@@ -13,27 +15,37 @@ namespace Cesta.Web.Pages.ProductosCrud
 
         private readonly IProductoAppService _productoAppService;
 
-        public IndexModel(IProductoAppService productoAppService)
+        private readonly IMapper _mapper;
+
+        public IndexModel(IProductoAppService productoAppService, IMapper mapper)
         {
             _productoAppService = productoAppService;
+            _mapper = mapper;
         }
 
         public void OnGet()
         {
         }
 
-        public async Task<IActionResult> OnPost(ProductoDto producto) {
-
+        public async Task<IActionResult> OnPost(ProductoDto producto)
+        {
             if (!ModelState.IsValid)
             {
-                return Page();
+                var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return new JsonResult(new { success = false, errors = errorMessages });
             }
 
-            //Lógica para guardar el producto
-            //await _productoAppService.CreateAsync(producto);
-
-            return RedirectToPage("/ProductosCrud/Index");
-
+            try
+            {
+                var createUpdateProducto = _mapper.Map<ProductoDto, CreateUpdateProductoDto>(producto);
+                await _productoAppService.CreateAsync(createUpdateProducto);
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
+            }
         }
+
     }
 }

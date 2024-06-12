@@ -37,8 +37,8 @@ body {
     display: flex;
     flex-direction: column;
     transition: transform linear 0.3s;
-    width: 30%;
     margin: 5px;
+    width: calc(33.33% - 10px); /* Tres tarjetas por fila */
 }
 
 .cardProducto:hover {
@@ -49,6 +49,7 @@ body {
     border-radius: 20px;
     height: auto;
     width: 50%;
+    max-width: 100%;
     align-self: center;
 }
 
