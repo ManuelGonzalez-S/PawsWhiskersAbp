@@ -11,6 +11,7 @@
 
 <script>
     function cambiarBase64(event) {
+        debugger;
         const fileInput = event.target;
         const file = fileInput.files[0];
         if (file) {
@@ -18,11 +19,6 @@
             reader.onloadend = function () {
                 const base64String = reader.result.split(',')[1];
                 document.getElementById('imageBase64').value = base64String;
-
-                // Mostrar la imagen
-                const imgElement = document.getElementById('imagePreview');
-                imgElement.src = reader.result;
-                imgElement.style.display = "block";
             }
             reader.readAsDataURL(file);
         } else {
@@ -31,22 +27,6 @@
         }
     }
 </script>
-
-<style>
-
-    #divImagenPreview{
-        width: 100%;
-        display:flex;
-        justify-content:center;
-    }
-
-    #imagePreview{
-        display: none;
-        max-width: 40%;
-        margin-top: 20px;
-    }
-
-</style>
 
 <abp-modal>
     <abp-modal-header title="@L["NewProducto"].Value"></abp-modal-header>
@@ -91,20 +71,14 @@
             <!-- Campo Imagen -->
             <div class="form-group">
                 <label for="imageUpload">@L["Image"]</label>
-
-                <!-- Vista previa de la imagen -->
-                <!-- Div para que se centre -->
-                <div id="divImagenPreview">
-                    <img id="imagePreview" alt="Selected Image">
-                </div>
-
                 <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" onchange="cambiarBase64(event)" />
-                <input id="imageBase64" type="text" name="Producto.ImageBase64" asp-for="Producto.ImageBase64" hidden />
+                <input id="imageBase64" type="text" name="Producto.ImageBase64" asp-for="Producto.ImageBase64" hidden/>
                 <span class="text-danger" asp-validation-for="auxiliar"></span>
             </div>
 
             <!-- Campo Oculto -->
             <input type="hidden" id="campoOculto" name="Producto.CampoOculto" value="Valor oculto" />
+            @* <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer> *@
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </abp-modal-body>

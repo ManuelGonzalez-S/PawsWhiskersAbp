@@ -57,7 +57,9 @@
                     title: l('CreationTime'),
                     data: "creationTime",
                     render: function (data) {
+
                         var fecha = moment(data);
+
                         return fecha.format("DD/MM/YYYY");
                     }
                 },
@@ -71,34 +73,19 @@
                     render: function (data) {
                         return l('Enum:MascotaType.' + data);
                     }
+
                 }
             ]
         })
     );
 
-    createModal.onResult(function (event, jqXHR) {
-        // Asegúrate de estar obteniendo el JSON de la respuesta
-        const result = jqXHR.responseText;
-        console.log(result);
 
-        if (result.success) {
-            abp.notify.info(l('ProductoCreatedSuccesfully'));
-            dataTable.ajax.reload();
-        } else {
-            if (result.errors) {
-                // Mostrar todos los errores de validación
-                result.errors.forEach(function (error) {
-                    abp.notify.error(error);
-                });
-            } else {
-                abp.notify.error(result.message || l('UnexpectedError'));
-            }
-        }
+
+
+    createModal.onResult(function () {
+        dataTable.ajax.reload();
+        abp.notify.info(l('ProductoCreatedSuccesfully'));
     });
-
-
-
-
 
     editModal.onResult(function () {
         abp.notify.info(l('ProductoEditedSuccesfully'));
@@ -109,6 +96,13 @@
         e.preventDefault();
         createModal.open();
     });
+
+
+
+
+
+
+
 
     //Prueba para mostrar las cards
 
@@ -129,4 +123,13 @@
     //const app = initializeApp(firebaseConfig);
 
     //const database = getDatabase(app);
+
+
+
+
+
+
+
+
+
 });
