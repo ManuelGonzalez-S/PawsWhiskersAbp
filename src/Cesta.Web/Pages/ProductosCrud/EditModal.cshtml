@@ -8,13 +8,121 @@
 @{
     Layout = null;
 }
-<abp-dynamic-form abp-model="Producto" asp-page="/ProductosCrud/EditModal">
-    <abp-modal>
-        <abp-modal-header title="@L["Update"].Value"></abp-modal-header>
-        <abp-modal-body>
-            <abp-input asp-for="Id" />
-            <abp-form-content />
-        </abp-modal-body>
-        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
-    </abp-modal>
-</abp-dynamic-form>
+
+<script>
+    function cambiarBase64(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const base64String = reader.result.split(',')[1];
+                document.getElementById('imageBase64').value = base64String;
+
+                // Mostrar la imagen
+                const imgElement = document.getElementById('imagePreview');
+                imgElement.src = reader.result;
+                imgElement.style.display = "block";
+            }
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('imageBase64').value = "";
+            alert("No file selected or file reading failed.");
+        }
+    }
+
+    function convertirABase64(valorBase64) {
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const base64String = reader.result.split(',')[1];
+                document.getElementById('imageBase64').value = base64String;
+
+                // Mostrar la imagen
+                const imgElement = document.getElementById('imagePreview');
+                imgElement.src = reader.result;
+                imgElement.style.display = "block";
+            }
+            reader.readAsDataURL(file);
+        
+    }
+
+    convertirABase64('@Model.Producto.ImageBase64');
+
+</script>
+
+<style>
+    #divImagePreview {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #imagePreview {
+        display: none;
+        max-width: 40%;
+        margin-top: 20px;
+    }
+</style>
+
+<abp-modal>
+    <abp-modal-header title="@L["UpdateProducto"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label for="nombre">@L["Nombre"]</label>
+                <input type="text" class="form-control" id="nombre" asp-for="Producto.Name" />
+                <span class="text-danger" asp-validation-for="Producto.Name"></span>
+            </div>
+
+            <!-- Campo Descripción -->
+            <div class="form-group">
+                <label for="descripcion">@L["Descripcion"]</label>
+                <textarea class="form-control" id="descripcion" asp-for="Producto.Description"></textarea>
+                <span class="text-danger" asp-validation-for="Producto.Description"></span>
+            </div>
+
+            <!-- Campo Precio -->
+            <div class="form-group">
+                <label for="precio">@L["Precio"]</label>
+                <input type="number" class="form-control" id="precio" asp-for="Producto.Price" />
+                <span class="text-danger" asp-validation-for="Producto.Price"></span>
+            </div>
+
+            <!-- Campo MascotaType -->
+            <div class="form-group">
+                <label for="mascotaType">@L["MascotaType"]</label>
+                <abp-select class="form-control" id="mascotaType" asp-for="Producto.MascotaType" asp-items="Model.SelectListMascotaType">
+                </abp-select>
+                <span class="text-danger" asp-validation-for="Producto.MascotaType"></span>
+            </div>
+
+            <!-- Campo ProductoType -->
+            <div class="form-group">
+                <label for="productoType">@L["ProductoType"]</label>
+                <abp-select class="form-control" id="productoType" asp-for="Producto.ProductoType" asp-items="Model.SelectlistProductoType">
+                </abp-select>
+                <span class="text-danger" asp-validation-for="Producto.ProductoType"></span>
+            </div>
+
+            <!-- Campo Imagen -->
+            <div class="form-group">
+                <label for="imageUpload">@L["Image"]</label>
+
+                <div id="divImagePreview">
+                    <!-- Vista previa de la imagen -->
+                    <img id="imagePreview" alt="Selected Image" src="data:image/png;base64,@Model.Producto.ImageBase64">
+                </div>
+
+                <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" onchange="cambiarBase64(event)" />
+                <input id="imageBase64" type="text" name="Producto.ImageBase64" asp-for="Producto.ImageBase64" hidden />
+                <span class="text-danger" asp-validation-for="Producto.ImageBase64"></span>
+            </div>
+
+            <!-- Campo Oculto -->
+            <input type="hidden" id="campoOculto" name="Producto.CampoOculto" value="Valor oculto" />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </abp-modal-body>
+</abp-modal>
