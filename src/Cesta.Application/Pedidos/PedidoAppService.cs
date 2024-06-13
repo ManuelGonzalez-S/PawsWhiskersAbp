@@ -19,7 +19,13 @@ using Volo.Abp.Users;
 
 namespace Cesta.Pedidos
 {
-    public class PedidoAppService : IPedidoAppService
+    public class PedidoAppService : CrudAppService<
+            Pedido, //The Producto entity
+            PedidoDto, //Used to show productos
+            Guid, //Primary key of the producto entity
+            PagedAndSortedResultRequestDto, //Used for paging/sorting
+            CreateUpdatePedidoDto>, //Used to create/update a producto
+        IPedidoAppService
 
     {
 
@@ -31,7 +37,7 @@ namespace Cesta.Pedidos
 
         public IMapper _mapper;
 
-        public PedidoAppService(IRepository<Pedido, Guid> repository, IMapper mapper, ICurrentUser currentUser, IProductoAppService productoAppService)
+        public PedidoAppService(IRepository<Pedido, Guid> repository, IMapper mapper, ICurrentUser currentUser, IProductoAppService productoAppService) : base(repository)
         {
             //GetPolicyName = CestaPermissions.Productos.Default;
             //GetListPolicyName = CestaPermissions.Productos.Default;
@@ -51,7 +57,7 @@ namespace Cesta.Pedidos
 
         #region Get
 
-        public async Task<PedidoDto> GetAsync(Guid id)
+        public override async Task<PedidoDto> GetAsync(Guid id)
         {
             byte[] bytes = id.ToByteArray();
             int convertedInt = BitConverter.ToInt32(bytes, 0);
@@ -62,16 +68,23 @@ namespace Cesta.Pedidos
 
         public async Task<PedidoDto> GetById(int id)
         {
-            var pedido = GetByPedidoIdAsync(id);
+            var pedido = await GetByPedidoIdAsync(id);
             return _mapper.Map<PedidoDto>(pedido);
         }
 
-        public async Task<List<PedidoDto>> GetByUserId(Guid userId)
+        public async Task<List<PedidoDto>> GetByUserId()
         {
+
+            if(_currentUser.Id == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            var userId = _currentUser.Id;
 
             Check.NotNull(userId, nameof(userId));
 
-            var pedidosUser = await GetListByUserId(userId);
+            var pedidosUser = await GetListByCurrentUser();
 
             return pedidosUser;
 
@@ -100,8 +113,16 @@ namespace Cesta.Pedidos
             return pedido;
         }
 
-        public async Task<List<PedidoDto>> GetListByUserId(Guid idUser)
+        public async Task<List<PedidoDto>> GetListByCurrentUser()
         {
+
+            if(_currentUser.Id == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            var idUser = _currentUser.Id;
+
             Check.NotNull(idUser, nameof(idUser));
 
             // Obtener la lista de pedidos y filtrar por el idGuid
@@ -119,14 +140,14 @@ namespace Cesta.Pedidos
             return pedidosDtos;
         }
 
-        public Task<PagedResultDto<PedidoDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public override async Task<PagedResultDto<PedidoDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             throw new NotImplementedException();
         }
         #endregion
 
         #region Create
-        public async Task<PedidoDto> CreateAsync(CreateUpdatePedidoDto dto)
+        public override async Task<PedidoDto> CreateAsync(CreateUpdatePedidoDto dto)
         {
 
             var idProducto = await _productoAppService.GetByIdAsync(dto.ProductoId);
@@ -135,7 +156,7 @@ namespace Cesta.Pedidos
             var listaProductosBBDD = await _productoAppService.ListAsync();
 
             // Recoger la lista de pedidos del usuario en el carrito
-            var listPedidosUser = await GetListByUserId((Guid)_currentUser.Id);
+            var listPedidosUser = await GetListByCurrentUser();
 
             // Recoger los productos de la lista de pedidos
             List<Producto> listProductosCestaUser = new List<Producto>();
@@ -173,10 +194,10 @@ namespace Cesta.Pedidos
         }
 
 
-        public async Task<PedidoDto> CreateAsync(int dto)
+        public async Task<PedidoDto> CreateAsync(int productoId)
         {
 
-            Guid guidGenerado = new Guid(dto, 0, 0, new byte[8]);
+            Guid guidGenerado = new Guid(productoId, 0, 0, new byte[8]);
 
             var idProducto = await _productoAppService.GetByIdAsync(guidGenerado);
 
@@ -184,7 +205,7 @@ namespace Cesta.Pedidos
             var listaProductosBBDD = await _productoAppService.ListAsync();
 
             // Recoger la lista de pedidos del usuario en el carrito
-            var listPedidosUser = await GetListByUserId((Guid)_currentUser.Id);
+            var listPedidosUser = await GetListByCurrentUser();
 
             // Recoger los productos de la lista de pedidos
             List<Producto> listProductosCestaUser = new List<Producto>();
@@ -223,34 +244,7 @@ namespace Cesta.Pedidos
         #endregion
 
         #region Update
-        public async Task UpdateAsync(Guid id, PedidoDto input)
-        {
-
-            byte[] guidBytes = id.ToByteArray();
-            int resultado;
-
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] hashBytes = sha256.ComputeHash(guidBytes);
-                resultado = BitConverter.ToInt32(hashBytes, 0);
-            }
-
-            var pedido = await GetByPedidoIdAsync(resultado);
-
-            if((pedido != null) && (pedido.ProductoId == input.ProductoId) && (pedido.UsuarioId == input.UsuarioId))
-            {
-                pedido.Cantidad = input.Cantidad;
-
-                await _pedidoAppRepository.UpdateAsync(pedido);
-            }
-            else
-            {
-                throw new Exception("datosErroneos");
-            }
-
-        }
-
-        public async Task<PedidoDto> UpdateAsync(Guid id, CreateUpdatePedidoDto input)
+        public override async Task<PedidoDto> UpdateAsync(Guid id, CreateUpdatePedidoDto input)
         {
             byte[] guidBytes = id.ToByteArray();
             int resultado;
@@ -279,7 +273,7 @@ namespace Cesta.Pedidos
         #endregion
 
         #region Delete
-        public async Task DeleteAsync(Guid id)
+        public override async Task DeleteAsync(Guid id)
         {
             await _pedidoAppRepository.DeleteAsync(id);
         }

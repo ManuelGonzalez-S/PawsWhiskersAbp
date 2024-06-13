@@ -16,26 +16,24 @@ namespace Cesta.Web.Pages.Productos
     {
         #region Binding
         private readonly IProductoAppService _productoAppService;
-        //private readonly IPedidoAppService _pedidoAppService;
-        private readonly ILogger<IndexModel> _logger;
+        private readonly IPedidoAppService _pedidoAppService;
 
         public List<ProductoDto> ListaProductos { get; set; } = new List<ProductoDto>();
         #endregion
 
         #region Constructor
 
-        //public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService, ILogger<IndexModel> logger)
-        //{
-        //    _productoAppService = productoAppService;
-        //    _pedidoAppService = pedidoAppService;
-        //    _logger = logger;
-        //}
-
-        public IndexModel(IProductoAppService productoAppService, ILogger<IndexModel> logger)
+        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService)
         {
             _productoAppService = productoAppService;
-            _logger = logger;
+            _pedidoAppService = pedidoAppService;
         }
+
+        //public IndexModel(IProductoAppService productoAppService, ILogger<IndexModel> logger)
+        //{
+        //    _productoAppService = productoAppService;
+        //    _logger = logger;
+        //}
         #endregion
 
         #region Get
@@ -43,14 +41,10 @@ namespace Cesta.Web.Pages.Productos
         {
             try
             {
-                var startTime = DateTime.UtcNow;
                 ListaProductos = await _productoAppService.ListAsync();
-                var endTime = DateTime.UtcNow;
-                _logger.LogInformation($"Time taken to load products: {endTime - startTime}ms");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error loading products: {ex.Message}");
                 // Handle the error (e.g., show a message to the user)
             }
         }

@@ -13,6 +13,7 @@
     "ProductoType": "Producto",
     "MascotaType": "Mascota",
     "Menu:Cesta": "Tienda",
+    "Menu:Carrito": "Carrito",
     "Menu:CRUDProductos": "Manejo de productos",
     "NewProducto": "Añadir producto",
     "ProductoDeletionConfirmationMessage": "¿Está seguro de que quiere borrar este producto?",
@@ -24,6 +25,10 @@
     "Permission:Productos": "Permisos sobre los productos",
     "Permission:Productos.Create": "Crear productos",
     "Permission:Productos.Edit": "Editar los productos",
-    "Permission:Productos.Delete":  "Borrar productos"
+    "Permission:Productos.Delete": "Borrar productos",
+    "FinalizarCompra": "Finalizar compra",
+    "NoPedidos": "Aquí podrás encontrar los productos que añadas a la cesta",
+    "NoProductosEnCatalogo": "No hay productos en el catálogo por el momento",
+    "IrCatalogo":  "Ir al catálogo"
   }
 }

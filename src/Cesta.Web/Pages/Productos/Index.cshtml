@@ -78,7 +78,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
-                                <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fas fa-shopping-basket"></i> Agregar a la cesta</abp-button>
+                                <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fa-solid fa-cart-arrow-down"></i> Agregar a la cesta</abp-button>
                             </a>
                         }
                     </div>
@@ -88,7 +88,7 @@
             {
                 <div id="MensajeSinProductosCatalogo" class="col-md-4">
                     <div id="textoSinproductosCatalogo">
-                        <p id="pSinProductosCatalogo">No hay productos en el catálogo</p>
+                        <p id="pSinProductosCatalogo">@L["NoProductosEnCatalogo"]</p>
                     </div>
                 </div>
             }

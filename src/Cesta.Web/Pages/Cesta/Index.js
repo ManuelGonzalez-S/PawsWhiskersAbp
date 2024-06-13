@@ -1,27 +1,30 @@
-﻿$(async function () {
-    var l = abp.localization.getResource('Cesta');
-
-
-    var listaProductos = document.getElementById('listaProductos');
-
-    console.log("Antes");
-    console.log(listaProductos);
-    console.log("Despues");
-
-    // Muestra el GIF de carga
+﻿$(document).ready(async function () {
+    // Muestra el GIF de carga y oculta la lista de productos al cargar la página
     $('#loadingGif').show();
-    $('#btn-notification').hide();
-    listaProductos.style.display = "none";
+    $('#listaPedidos').hide();
+    $('#btn-comprar').hide();
 
-    // Espera de 2 segundos (2000 ms)
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    // Espera hasta que los productos estén cargados en el modelo
+    await waitForOrdersToLoad();
 
-    //Oculta el gif de carga
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Oculta el GIF de carga y muestra la lista de productos una vez que se hayan cargado
     $('#loadingGif').hide();
-    $('#btn-notification').show();
-    listaProductos.style.display = "block";
-
-
-
-
+    $('#listaPedidos').show();
+    $('#btn-comprar').show();
 });
+
+// Función para esperar hasta que los productos estén cargados en el modelo
+function waitForOrdersToLoad() {
+    return new Promise((resolve) => {
+        const checkProductsLoaded = () => {
+            if (document.getElementById('listaPedidos').children.length > 0) {
+                resolve();
+            } else {
+                setTimeout(checkProductsLoaded, 100);
+            }
+        };
+        checkProductsLoaded();
+    });
+}

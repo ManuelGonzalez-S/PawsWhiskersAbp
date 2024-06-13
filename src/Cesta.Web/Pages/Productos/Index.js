@@ -40,7 +40,7 @@ function modificarCantidadCarrito(element) {
         $(element).html('<i class="fas fa-check"></i> Agregado');
     } else {
         cantidad--;
-        $(element).html('<i class="fas fa-shopping-basket"></i> Agregar a la cesta');
+        $(element).html('<i class="fa-solid fa-cart-arrow-down"></i> Agregar a la cesta');
     }
 
     cantidadCarrito.textContent = cantidad;

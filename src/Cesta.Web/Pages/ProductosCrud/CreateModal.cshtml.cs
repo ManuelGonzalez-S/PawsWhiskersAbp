@@ -49,32 +49,5 @@ namespace Cesta.Web.Pages.ProductosCrud
                                              Text = e.ToString()
                                          }).ToList();
         }
-
-        //public async Task<IActionResult> OnPostAsync(ProductoDto productoDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    string base64String;
-
-        //    if (auxiliar != null)
-        //    {
-        //        using (var memoryStream = new MemoryStream())
-        //        {
-        //            await auxiliar.CopyToAsync(memoryStream);
-        //            byte[] bytes = memoryStream.ToArray();
-        //            base64String = Convert.ToBase64String(bytes);
-        //        }
-
-        //        Producto.ImageBase64 = base64String;
-        //    }
-
-        //    // Lógica para guardar el producto
-
-        //    await _productoAppService.CreateAsync(Producto);
-        //    return RedirectToPage("/ProductosCrud/Index");
-        //}
     }
 }

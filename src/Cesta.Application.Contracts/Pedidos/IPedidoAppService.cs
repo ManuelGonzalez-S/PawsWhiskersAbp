@@ -16,13 +16,9 @@ namespace Cesta.Pedidos
     {
         Task<PedidoDto> GetById(int id);
 
-        Task<List<PedidoDto>> GetByUserId(Guid userId);
+        Task<List<PedidoDto>> GetListByCurrentUser();
 
         Task<PedidoDto> CreateAsync(int idProducto);
-
-        Task UpdateAsync(Guid id, PedidoDto dto);
-
-        Task DeleteAsync(Guid id);
 
     }
 }

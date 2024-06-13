@@ -55,8 +55,17 @@ public class CestaMenuContributor : IMenuContributor
                 "Productos",
                 l["Menu:Productos"],
                 "/Productos",
-                icon: "fas fa-list-ol"
+                icon: "bi bi-shop"
             )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "Carrito",
+                l["Menu:Carrito"],
+                "/Cesta",
+                icon: "fa-solid fa-cart-shopping"
+            ).RequireAuthenticated()
         );
 
         return Task.CompletedTask;
