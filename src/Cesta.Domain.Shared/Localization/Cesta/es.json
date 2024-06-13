@@ -29,6 +29,8 @@
     "FinalizarCompra": "Finalizar compra",
     "NoPedidos": "Aquí podrás encontrar los productos que añadas a la cesta",
     "NoProductosEnCatalogo": "No hay productos en el catálogo por el momento",
-    "IrCatalogo":  "Ir al catálogo"
+    "IrCatalogo": "Ir al catálogo",
+    "UnexpectedError": "Ups, algo salió mal",
+    "formatoImagenMalo":  "El formato del archivo no es válido"
   }
 }
