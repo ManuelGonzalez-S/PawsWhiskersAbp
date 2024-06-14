@@ -21,7 +21,7 @@
             if (!nombreFile.includes(".png") && !nombreFile.includes(".jpg") && !nombreFile.includes(".jepg")) {
                 btnCrear.disabled = true;
                 $('#msgImagenError').show();
-            } else { 
+            } else {
                 btnCrear.disabled = false;
             }
             const reader = new FileReader();
@@ -43,7 +43,6 @@
 </script>
 
 <style>
-
     #divImagePreview {
         width: 100%;
         display: flex;
@@ -55,13 +54,12 @@
         max-width: 40%;
         margin-top: 20px;
     }
-
 </style>
 
 <abp-modal>
     <abp-modal-header title="@L["NewProducto"].Value"></abp-modal-header>
     <abp-modal-body>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" asp-page-handler="Create">
             <div class="form-group">
                 <label for="nombre">@L["Nombre"]</label>
                 <input type="text" class="form-control" id="nombre" name="Producto.Name" />
@@ -104,8 +102,8 @@
                     <!-- Vista previa de la imagen -->
                     <img id="imagePreview" alt="Selected Image">
                 </div>
-                
-                <span class="text-danger" style="display: none;" id="msgImagenError" >
+
+                <span class="text-danger" style="display: none;" id="msgImagenError">
                     @L["formatoImagenMalo"]
                 </span>
 

@@ -194,12 +194,10 @@ namespace Cesta.Pedidos
         }
 
 
-        public async Task<PedidoDto> CreateAsync(int productoId)
+        public async Task<PedidoDto> CreateAsyncGuidProducto(Guid productoId)
         {
 
-            Guid guidGenerado = new Guid(productoId, 0, 0, new byte[8]);
-
-            var idProducto = await _productoAppService.GetByIdAsync(guidGenerado);
+            var idProducto = await _productoAppService.GetByIdAsync(productoId);
 
             // Obtener la lista de productos desde _productoAppService
             var listaProductosBBDD = await _productoAppService.ListAsync();
