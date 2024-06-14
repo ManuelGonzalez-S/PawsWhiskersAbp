@@ -14,6 +14,14 @@
         const fileInput = event.target;
         const file = fileInput.files[0];
         if (file) {
+            console.log(file);
+            var nombreFile = file.name;
+            console.log(nombreFile);
+            if (!nombreFile.includes(".png") && !nombreFile.includes(".jpg") && !nombreFile.includes(".jepg")) {
+                btnCrear.disabled = true;
+            } else {
+                btnCrear.disabled = false;
+            }
             const reader = new FileReader();
             reader.onloadend = function () {
                 const base64String = reader.result.split(',')[1];
@@ -34,9 +42,9 @@
 
 <style>
 
-    #divImagePreview{
-        width:100%;
-        display:flex;
+    #divImagePreview {
+        width: 100%;
+        display: flex;
         justify-content: center;
     }
 
@@ -95,6 +103,10 @@
                     <img id="imagePreview" alt="Selected Image">
                 </div>
 
+                <span class="text-danger" style="display: none;">
+                    @L["formatoImagenMalo"]
+                </span>
+
                 <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" id="imageUpload" onchange="cambiarBase64(event)" />
                 <input id="imageBase64" type="text" name="Producto.ImageBase64" asp-for="Producto.ImageBase64" hidden />
                 <span class="text-danger" asp-validation-for="auxiliar"></span>
@@ -102,7 +114,7 @@
 
             <!-- Campo Oculto -->
             <input type="hidden" id="campoOculto" name="Producto.CampoOculto" value="Valor oculto" />
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary" id="btnCrear">Guardar</button>
         </form>
     </abp-modal-body>
 </abp-modal>
