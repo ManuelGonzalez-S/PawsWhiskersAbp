@@ -1,8 +1,76 @@
-﻿$(function () {
-    var l = abp.localization.getResource('Cesta');
+﻿$(document).ready(async function() {
+    $('#loadingGif').show();
+    $('#NewProductoButton').hide()
     var createModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/EditModal');
 
+    await cargarTabla();
+    await new Promise(resolve => setTimeout(resolve,2000))
+    $('#loadingGif').hide()
+    $('#NewProductoButton').show()
+    
+
+
+    createModal.onResult(function (event, jqXHR) {
+        // Asegúrate de estar obteniendo el JSON de la respuesta
+        const result = jqXHR.responseText;
+        console.log(result);
+
+        if (result.success) {
+            abp.notify.info(l('ProductoCreatedSuccesfully'));
+            dataTable.ajax.reload();
+        } else {
+            if (result.errors) {
+                // Mostrar todos los errores de validación
+                result.errors.forEach(function (error) {
+                    abp.notify.error(error);
+                });
+            } else {
+                abp.notify.error(result.message || l('UnexpectedError'));
+            }
+        }
+    });
+
+    editModal.onResult(function () {
+        abp.notify.info(l('ProductoEditedSuccesfully'));
+        dataTable.ajax.reload();
+    });
+
+    $('#NewProductoButton').click(function (e) {
+        e.preventDefault();
+        createModal.open();
+    });
+
+
+
+
+
+
+
+
+    //Prueba para mostrar las cards
+
+    //const firebaseConfig = {
+    //    apiKey: "AIzaSyAgKENsXD_em4OZUU0z03sLh3wRnUnNDac",
+    //    authDomain: "pawswhiskers-79511.firebaseapp.com",
+    //    databaseURL: "https://pawswhiskers-79511-default-rtdb.firebaseio.com/",
+    //    projectId: "pawswhiskers-79511",
+    //    storageBucket: "pawswhiskers-79511.appspot.com",
+    //    messagingSenderId: "626296275197",
+    //    appId: "1:626296275197:web:9695e60ad5970608f6be94",
+    //    measurementId: "G-MEL51H5EF7"
+    //};
+
+    //import { initializeApp } from "firebase/app";
+    //import { getDatabase } from "firebase/database";
+
+    //const app = initializeApp(firebaseConfig);
+
+    //const database = getDatabase(app);
+
+});
+function cargarTabla() {
+    var l = abp.localization.getResource('Cesta');
     var dataTable = $('#ProductosTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
@@ -78,73 +146,4 @@
             ]
         })
     );
-
-
-
-
-    createModal.onResult(function (event, jqXHR) {
-        // Asegúrate de estar obteniendo el JSON de la respuesta
-        const result = jqXHR.responseText;
-        console.log(result);
-
-        if (result.success) {
-            abp.notify.info(l('ProductoCreatedSuccesfully'));
-            dataTable.ajax.reload();
-        } else {
-            if (result.errors) {
-                // Mostrar todos los errores de validación
-                result.errors.forEach(function (error) {
-                    abp.notify.error(error);
-                });
-            } else {
-                abp.notify.error(result.message || l('UnexpectedError'));
-            }
-        }
-    });
-
-    editModal.onResult(function () {
-        abp.notify.info(l('ProductoEditedSuccesfully'));
-        dataTable.ajax.reload();
-    });
-
-    $('#NewProductoButton').click(function (e) {
-        e.preventDefault();
-        createModal.open();
-    });
-
-
-
-
-
-
-
-
-    //Prueba para mostrar las cards
-
-    //const firebaseConfig = {
-    //    apiKey: "AIzaSyAgKENsXD_em4OZUU0z03sLh3wRnUnNDac",
-    //    authDomain: "pawswhiskers-79511.firebaseapp.com",
-    //    databaseURL: "https://pawswhiskers-79511-default-rtdb.firebaseio.com/",
-    //    projectId: "pawswhiskers-79511",
-    //    storageBucket: "pawswhiskers-79511.appspot.com",
-    //    messagingSenderId: "626296275197",
-    //    appId: "1:626296275197:web:9695e60ad5970608f6be94",
-    //    measurementId: "G-MEL51H5EF7"
-    //};
-
-    //import { initializeApp } from "firebase/app";
-    //import { getDatabase } from "firebase/database";
-
-    //const app = initializeApp(firebaseConfig);
-
-    //const database = getDatabase(app);
-
-
-
-
-
-
-
-
-
-});
+}

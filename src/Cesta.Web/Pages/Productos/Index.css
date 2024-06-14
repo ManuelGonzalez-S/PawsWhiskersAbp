@@ -39,6 +39,7 @@ body {
     transition: transform linear 0.3s;
     margin: 5px;
     width: calc(33.33% - 10px);
+    justify-content: space-between;
 }
 
 .cardProducto:hover {

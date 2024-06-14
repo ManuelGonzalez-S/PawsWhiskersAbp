@@ -17,8 +17,10 @@
             console.log(file);
             var nombreFile = file.name;
             console.log(nombreFile);
+            $('#msgImagenError').hide();
             if (!nombreFile.includes(".png") && !nombreFile.includes(".jpg") && !nombreFile.includes(".jepg")) {
                 btnCrear.disabled = true;
+                $('#msgImagenError').show();
             } else { 
                 btnCrear.disabled = false;
             }
@@ -103,7 +105,7 @@
                     <img id="imagePreview" alt="Selected Image">
                 </div>
                 
-                <span class="text-danger" style="display: none;">
+                <span class="text-danger" style="display: none;" id="msgImagenError" >
                     @L["formatoImagenMalo"]
                 </span>
 
