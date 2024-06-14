@@ -19,12 +19,24 @@ $(function () {
             iconAnchor: [1, 1],
             popupAnchor: [1, 1]
 
+
+    var mapIcon = L.Icon.extend({
+        options: {
+            shadowUrl: '/pages/Leaflet/images/marker-shadow.png',
+            iconsize: [1, 1],
+            shadowSize: [1, 1],
+            iconAnchor: [1, 1],
+            popupAnchor: [0, 0]
+
         }
     });
 
-    L.marker([40.402329, -3.698598]).addTo(map).bindPopup("Tienda asdasdasdasdasdasdasdawsdas");
+    var tiendaIcon = new mapIcon({ iconUrl: '/Pages/Leaflet/images/store.png' });
 
-    var popup = L.popup();
+    L.marker([40.402329, -3.698598], { icon: tiendaIcon }).addTo(map).bindPopup("Tienda IMF");
+    L.marker([40.406859, -3.688683], { icon: tiendaIcon }).addTo(map).bindPopup("Tienda Atocha");
+    L.marker([40.41445, -3.683776], { icon: tiendaIcon }).addTo(map).bindPopup("Tienda Retiro");
+   
 
     function onMapClick(e) {
         popup
@@ -34,32 +46,6 @@ $(function () {
     }
 
     map.on('click', onMapClick);
-
-
-
-
-
-
-    var LeafIcon = L.Icon.extend({
-        options: {
-            shadowUrl: 'leaf-shadow.png',
-            iconSize: [38, 95],
-            shadowSize: [50, 64],
-            iconAnchor: [22, 94],
-            shadowAnchor: [4, 62],
-            popupAnchor: [-3, -76]
-        }
-    });
-
-    L.marker([51.5, -0.09], { icon: greenIcon }).addTo(map);
-
-    L.marker([51.5, -0.09], { icon: greenIcon }).addTo(map).bindPopup("I am a green leaf.");
-    L.marker([51.495, -0.083], { icon: redIcon }).addTo(map).bindPopup("I am a red leaf.");
-    L.marker([51.49, -0.1], { icon: orangeIcon }).addTo(map).bindPopup("I am an orange leaf.");
-
-
-
-    
 
 });
 

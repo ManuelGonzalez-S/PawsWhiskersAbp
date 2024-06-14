@@ -12,9 +12,7 @@ namespace Cesta.Web.Pages.ProductosCrud
 {
     public class IndexModel : PageModel
     {
-
         private readonly IProductoAppService _productoAppService;
-
         private readonly IMapper _mapper;
 
         public IndexModel(IProductoAppService productoAppService, IMapper mapper)
@@ -27,7 +25,7 @@ namespace Cesta.Web.Pages.ProductosCrud
         {
         }
 
-        public async Task<IActionResult> OnPost(ProductoDto producto)
+        public async Task<IActionResult> OnPostCreateAsync(ProductoDto producto)
         {
             if (!ModelState.IsValid)
             {
@@ -46,6 +44,24 @@ namespace Cesta.Web.Pages.ProductosCrud
                 return new JsonResult(new { success = false, message = ex.Message });
             }
         }
+        public async Task<IActionResult> OnPostEditAsync(ProductoDto producto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return new JsonResult(new { success = false, errors = errorMessages });
+            }
 
+            try
+            {
+                var updateProducto = _mapper.Map<ProductoDto, CreateUpdateProductoDto>(producto);
+                await _productoAppService.UpdateAsync(producto.Id, updateProducto);
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
+            }
+        }
     }
 }
