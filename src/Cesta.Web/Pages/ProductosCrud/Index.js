@@ -148,41 +148,7 @@ function cargarTabla() {
     );
 
 
-    createModal.onResult(function (event, jqXHR) {
-        // Asegúrate de estar obteniendo el JSON de la respuesta
-        const result = jqXHR.responseText;
-        console.log(result);
-
-        if (result.success) {
-            abp.notify.info(l('ProductoCreatedSuccesfully'));
-            dataTable.ajax.reload();
-        } else {
-            if (result.errors) {
-                // Mostrar todos los errores de validación
-                result.errors.forEach(function (error) {
-                    abp.notify.error(error);
-                });
-            } else {
-                abp.notify.error(result.message || l('UnexpectedError'));
-            }
-        }
-    });
-
-    editModal.onResult(function () {
-        abp.notify.info(l('ProductoEditedSuccesfully'));
-        dataTable.ajax.reload();
-    });
-
-    $('#NewProductoButton').click(function (e) {
-        e.preventDefault();
-        createModal.open();
-    });
-
-
-
-
-
-
+    
 
 
     //Prueba para mostrar las cards
@@ -213,4 +179,4 @@ function cargarTabla() {
 
 
 
-});
+};
