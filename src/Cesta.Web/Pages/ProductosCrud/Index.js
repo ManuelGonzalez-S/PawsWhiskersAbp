@@ -80,8 +80,6 @@
     );
 
 
-
-
     createModal.onResult(function (event, jqXHR) {
         // Asegúrate de estar obteniendo el JSON de la respuesta
         const result = jqXHR.responseText;

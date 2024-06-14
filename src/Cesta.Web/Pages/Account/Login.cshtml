@@ -10,6 +10,7 @@
 @inject IHtmlLocalizer<AccountResource> L
 @inject IThemeManager ThemeManager
 @inject Volo.Abp.Settings.ISettingProvider SettingProvider
+
 @{
     Layout = ThemeManager.CurrentTheme.GetAccountLayout();
 }
@@ -28,16 +29,14 @@
         {
             <strong>
                 @L["AreYouANewUser"]
-                <a href="@Url.Page("./Register", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-decoration-none">@L["Register"]<i class="bi bi-pen"></i></a> 
+                <a href="@Url.Page("./Register", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-decoration-none">@L["Register"]</a>
             </strong>
         }
-
         @if (Model.EnableLocalLogin)
         {
             <form method="post" class="mt-4">
-
                 <div class="mb-3">
-                    <label asp-for="LoginInput.UserNameOrEmailAddress" class="form-label"> </label>
+                    <label asp-for="LoginInput.UserNameOrEmailAddress" class="form-label"></label>
                     <input asp-for="LoginInput.UserNameOrEmailAddress" class="form-control" />
                     <span asp-validation-for="LoginInput.UserNameOrEmailAddress" class="text-danger"></span>
                 </div>
