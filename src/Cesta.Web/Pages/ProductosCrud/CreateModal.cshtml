@@ -17,9 +17,11 @@
             console.log(file);
             var nombreFile = file.name;
             console.log(nombreFile);
+            $('#msgImagenError').hide();
             if (!nombreFile.includes(".png") && !nombreFile.includes(".jpg") && !nombreFile.includes(".jepg")) {
                 btnCrear.disabled = true;
-            } else {
+                $('#msgImagenError').show();
+            } else { 
                 btnCrear.disabled = false;
             }
             const reader = new FileReader();
@@ -102,8 +104,8 @@
                     <!-- Vista previa de la imagen -->
                     <img id="imagePreview" alt="Selected Image">
                 </div>
-
-                <span class="text-danger" style="display: none;">
+                
+                <span class="text-danger" style="display: none;" id="msgImagenError" >
                     @L["formatoImagenMalo"]
                 </span>
 
