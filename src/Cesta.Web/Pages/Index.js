@@ -10,27 +10,19 @@ $(function () {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    var mapIcon = L.Icon.extend({
+        options: {
+            iconUrl: '/Pages/Leaflet/images/store.png',
+            shadowUrl: '/pages/Leaflet/images/marker-shadow.png',
+            iconsize: [1, 1],
+            shadowSize: [1, 1],
+            iconAnchor: [1, 1],
+            popupAnchor: [1, 1]
 
-    var marker = L.marker([40.402329, -3.698598]).addTo(map);
+        }
+    });
 
-    var circle = L.circle([51.508, -0.11], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 500
-    }).addTo(map);
-
-
-    var polygon = L.polygon([
-        [51.509, -0.08],
-        [51.503, -0.06],
-        [51.51, -0.047]
-    ]).addTo(map);
-
-
-    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-    circle.bindPopup("I am a circle.");
-    polygon.bindPopup("I am a polygon.");
+    L.marker([40.402329, -3.698598]).addTo(map).bindPopup("Tienda asdasdasdasdasdasdasdawsdas");
 
     var popup = L.popup();
 

@@ -78,7 +78,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a asp-page-handler="AñadirProductoACesta" class="enlAgregarCesta">
-                                <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this)"> <i class="fa-solid fa-cart-arrow-down"></i> Agregar a la cesta</abp-button>
+                                <abp-button class="btnAgregarCesta" onclick="modificarCantidadCarrito(this, @producto.Id)"> <i class="fa-solid fa-cart-arrow-down"></i> Agregar a la cesta</abp-button>
                             </a>
                         }
                     </div>

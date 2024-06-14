@@ -10,6 +10,18 @@
 }
 
 <script>
+    function convertirBase64AImagen() {
+        const base64String = '@Model.Producto.ImageBase64';
+        if (!base64String) {
+            alert("No Base64 string found.");
+            return;
+        }
+
+        const imgElement = document.getElementById('imagePreview');
+        imgElement.src = `data:image/png;base64,${base64String}`;
+        imgElement.style.display = "block";
+    }
+
     function cambiarBase64(event) {
         const fileInput = event.target;
         const file = fileInput.files[0];
@@ -32,18 +44,18 @@
     }
 
     function convertirABase64(valorBase64) {
-            const reader = new FileReader();
-            reader.onloadend = function () {
-                const base64String = reader.result.split(',')[1];
-                document.getElementById('imageBase64').value = base64String;
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            const base64String = reader.result.split(',')[1];
+            document.getElementById('imageBase64').value = base64String;
 
-                // Mostrar la imagen
-                const imgElement = document.getElementById('imagePreview');
-                imgElement.src = reader.result;
-                imgElement.style.display = "block";
-            }
-            reader.readAsDataURL(file);
-        
+            // Mostrar la imagen
+            const imgElement = document.getElementById('imagePreview');
+            imgElement.src = reader.result;
+            imgElement.style.display = "block";
+        }
+        reader.readAsDataURL(file);
+
     }
 
     convertirABase64('@Model.Producto.ImageBase64');

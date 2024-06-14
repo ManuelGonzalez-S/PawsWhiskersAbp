@@ -130,11 +130,11 @@ namespace Cesta.Pedidos
 
             var pedidos = resultado.Where(x => x.UsuarioId == idUser).ToList();
 
-            if (!pedidos.Any())
-            {
-                //Caso en que no se encuentren pedidos
-                throw new PedidoNotFoundException(nameof(Pedido));
-            }
+            //if (!pedidos.Any())
+            //{
+            //    //Caso en que no se encuentren pedidos
+            //    throw new PedidoNotFoundException(nameof(Pedido));
+            //}
 
             var pedidosDtos = _mapper.Map<List<Pedido>, List<PedidoDto>>(pedidos);
             return pedidosDtos;
@@ -194,13 +194,10 @@ namespace Cesta.Pedidos
         }
 
 
-        public async Task<PedidoDto> CreateAsync(Guid productoId)
+        public async Task<PedidoDto> CreateAsyncGuidProducto(Guid productoId)
         {
 
             var idProducto = await _productoAppService.GetByIdAsync(productoId);
-
-            // Obtener la lista de productos desde _productoAppService
-            var listaProductosBBDD = await _productoAppService.ListAsync();
 
             // Recoger la lista de pedidos del usuario en el carrito
             var listPedidosUser = await GetListByCurrentUser();
@@ -208,13 +205,24 @@ namespace Cesta.Pedidos
             // Recoger los productos de la lista de pedidos
             List<Producto> listProductosCestaUser = new List<Producto>();
 
-            foreach (var item in listPedidosUser)
+
+
+
+            //RECOGER PRODUCTOS EN LA CESTA DEL USER
+
+            if (idProducto != null)
             {
-                var productoDto = listaProductosBBDD.FirstOrDefault(p => p.Id == item.ProductoId);
-                if (productoDto != null)
+                foreach (var item in listPedidosUser)
                 {
-                    var producto = _mapper.Map<Producto>(productoDto);
-                    listProductosCestaUser.Add(producto);
+
+                    var producto = item.ProductoId;
+
+                    var productoResponse = await _productoAppService.GetByIdAsync(producto);
+
+                    //FILTRAR PARA COGER LOS PRODUCTOS QUE TIENE EL USUARIO
+                    var productoEntity = _mapper.Map<Producto>(productoResponse);
+                    listProductosCestaUser.Add(productoEntity);
+
                 }
             }
 
@@ -228,7 +236,7 @@ namespace Cesta.Pedidos
             var pedido = new Pedido();
 
             pedido.UsuarioId = (Guid)_currentUser.Id;
-            pedido.Cantidad = 0;
+            pedido.Cantidad = 1;
             pedido.ProductoId = idProducto.Id;
 
             // Insertar el pedido en el repositorio

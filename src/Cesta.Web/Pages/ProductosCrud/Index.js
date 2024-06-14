@@ -1,13 +1,15 @@
-﻿$(document).ready(async function() {
+﻿var createModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/CreateModal');
+var editModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/EditModal');
+var l = abp.localization.getResource('Cesta');
+var datatable;
+$(document).ready(async function () {
     $('#loadingGif').show();
     $('#NewProductoButton').hide()
-    var createModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/CreateModal');
-    var editModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/EditModal');
 
     await cargarTabla();
     await new Promise(resolve => setTimeout(resolve,2000))
-    $('#loadingGif').hide()
-    $('#NewProductoButton').show()
+    $('#loadingGif').hide();
+    $('#NewProductoButton').show();
     
 
 
@@ -70,8 +72,7 @@
 
 });
 function cargarTabla() {
-    var l = abp.localization.getResource('Cesta');
-    var dataTable = $('#ProductosTable').DataTable(
+    dataTable = $('#ProductosTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,

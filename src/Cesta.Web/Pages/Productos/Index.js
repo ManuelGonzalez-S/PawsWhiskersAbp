@@ -29,9 +29,11 @@ function waitForProductsToLoad() {
     });
 }
 
-function modificarCantidadCarrito(element) {
+function modificarCantidadCarrito(element, idProducto) {
     var cantidadCarrito = document.getElementById('notification-count');
     var cantidad = parseInt(cantidadCarrito.textContent);
+
+    var pedidoCrear = abp.libs.datatables.createAjax(cesta.pedidos.pedido.getList);
 
     $(element).toggleClass('active');
 
