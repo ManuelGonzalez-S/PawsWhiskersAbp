@@ -76,6 +76,7 @@
                 {
                     @foreach (var producto in Model.ListaProductos)
                     {
+                        var cantidad = await Model.GetProductoAsync(producto.Id);
                         <div class="card-body cardProducto col-md-4">
                             @if (!string.IsNullOrEmpty(producto.ImageBase64))
                             {
@@ -112,7 +113,12 @@
                                 </div>
                             </div>
                             <div id="divBoton">
-                                <abp-button class="btnEliminarDeCesta active" onclick="eliminarCarrito('@producto.Id')"> <i class="bi bi-trash-fill"></i> @L["EliminarDeCesta"] </abp-button>
+                                <div class="divSumarRestar">
+                                    <abp-button class="btnSumarRestar btnRestar" onclick=""> - </abp-button>
+                                    <div class="btnSumarRestar cantidadPedido">@cantidad.Cantidad</div>
+                                    <abp-button class="btnSumarRestar btnSumar" onclick=""> + </abp-button>
+                                </div>
+                                <abp-button class="btnEliminarDeCesta" onclick="eliminarCarrito('@producto.Id')"> <i class="bi bi-trash-fill"></i> @L["EliminarDeCesta"] </abp-button>
                             </div>
                         </div>
                     }

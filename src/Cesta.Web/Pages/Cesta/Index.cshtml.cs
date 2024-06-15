@@ -24,7 +24,7 @@ namespace Cesta.Web.Pages.Cesta
         public List<PedidoDto> ListaPedidos { get; set; } = new List<PedidoDto>();
         public List<ProductoDto> ListaProductos { get; set; } = new List<ProductoDto>();
 
-        public float totalPrecio { get; set; } = 0;
+        public decimal totalPrecio { get; set; } = 0;
 
         public Guid idUsuarioActual { get; set; }
 
@@ -63,7 +63,12 @@ namespace Cesta.Web.Pages.Cesta
                         var producto = await _productoAppService.GetByIdAsync(item.ProductoId);
                         ListaProductos.Add(producto);
 
-                        totalPrecio += producto.Price;
+                        var pedido = await _pedidoAppService.GetPedidoDtoByProductoId(item.ProductoId);
+
+                        totalPrecio += (decimal)(producto.Price * pedido.Cantidad); // Utilizando decimal
+
+                        // Redondear totalPrecio a dos decimales
+                        totalPrecio = Math.Round(totalPrecio, 2);
                     }
                 }
             }
@@ -73,5 +78,10 @@ namespace Cesta.Web.Pages.Cesta
             }
         }
         #endregion
+
+        public async Task<PedidoDto> GetProductoAsync(Guid productoId)
+        {
+            return await _pedidoAppService.GetPedidoDtoByProductoId(productoId);
+        }
     }
 }
