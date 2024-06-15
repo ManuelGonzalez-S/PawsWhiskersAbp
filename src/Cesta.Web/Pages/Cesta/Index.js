@@ -144,6 +144,8 @@ async function reloadPedidoList() {
                 $('#listaPedidos').append(productoHTML);
             }
 
+            totalPrecio = totalPrecio.toFixed(2);
+
             var totalTarjeta = `<div id="sectionCesta">
                                     <div id="totalPrecio">
                                         ${l('Total')} : ${totalPrecio} <i class="fas fa-euro-sign"></i>
