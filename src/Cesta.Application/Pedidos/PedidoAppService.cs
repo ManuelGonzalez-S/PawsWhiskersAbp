@@ -175,11 +175,7 @@ namespace Cesta.Pedidos
             // Recoger los productos de la lista de pedidos
             List<Producto> listProductosCestaUser = new List<Producto>();
 
-
-
-
             //RECOGER PRODUCTOS EN LA CESTA DEL USER
-
             if (idProducto != null)
             {
                 foreach (var item in listPedidosUser)
