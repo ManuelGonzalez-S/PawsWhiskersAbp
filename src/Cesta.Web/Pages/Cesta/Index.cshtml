@@ -79,27 +79,41 @@
                         <div class="card-body cardProducto col-md-4">
                             @if (!string.IsNullOrEmpty(producto.ImageBase64))
                             {
-                                <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@producto.ImageBase64" class="card-img-top">
+                                <div class="divImagen">
+                                    <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@producto.ImageBase64" class="card-img-top">
+                                </div>
                             }
                             else
                             {
 
                                 if (producto.MascotaType == Cesta.Productos.MascotaType.perro)
                                 {
-                                    <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@imagenPerritoBase64" class="card-img-top">
+                                    <div class="divImagen">
+                                        <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@imagenPerritoBase64" class="card-img-top">
+                                    </div>  
                                 }
                                 else if (producto.MascotaType == Cesta.Productos.MascotaType.gato)
                                 {
-                                    <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@imagenGateteBase64" class="card-img-top">
+                                    <div class="divImagen">
+                                        <img class="imagenProducto" alt="@producto.Name" src="data:image/png;base64,@imagenGateteBase64" class="card-img-top">
+                                    </div>
                                 }
 
                             }
-                            <h5 class="card-title">@producto.Name</h5>
-                            <p class="card-text">Descripcion: @producto.Description</p>
-                            <p class="card-text">Para: @producto.MascotaType</p>
-                            <p class="card-text">Tipo: @producto.ProductoType</p>
-                            <p class="card-text">Precio: @producto.Price€</p>
-                            <abp-button class="btnEliminarDeCesta active" onclick="eliminarCarrito('@producto.Id')"> <i class="bi bi-trash-fill"></i> @L["EliminarDeCesta"] </abp-button>
+                            <div id="divTexto">
+                                <div id="divTitulo">
+                                    <h5 class="card-title">@producto.Name</h5>
+                                </div>
+                                <div id="divDatos">
+                                    <p class="card-text">Descripcion: @producto.Description</p>
+                                    <p class="card-text">Para: @producto.MascotaType</p>
+                                    <p class="card-text">Tipo: @producto.ProductoType</p>
+                                    <p class="card-text">Precio: @producto.Price€</p>
+                                </div>
+                            </div>
+                            <div id="divBoton">
+                                <abp-button class="btnEliminarDeCesta active" onclick="eliminarCarrito('@producto.Id')"> <i class="bi bi-trash-fill"></i> @L["EliminarDeCesta"] </abp-button>
+                            </div>
                         </div>
                     }
 

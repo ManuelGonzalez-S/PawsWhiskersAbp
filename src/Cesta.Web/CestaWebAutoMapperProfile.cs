@@ -10,9 +10,9 @@ public class CestaWebAutoMapperProfile : Profile
     {
         //Define your AutoMapper configuration here for the Web project.
         CreateMap<Producto, ProductoDto>().ReverseMap();
-        CreateMap<CreateUpdateProductoDto, Producto>();
+        CreateMap<CreateUpdateProductoDto, Producto>().ReverseMap();
 
         CreateMap<Pedido, PedidoDto>().ReverseMap();
-        CreateMap<CreateUpdatePedidoDto, Pedido>();
+        CreateMap<CreateUpdatePedidoDto, Pedido>().ReverseMap();
     }
 }
