@@ -44,7 +44,7 @@ namespace Cesta.Web.Pages.ProductosCrud
                 return new JsonResult(new { success = false, message = ex.Message });
             }
         }
-        public async Task<IActionResult> OnPostEditAsync(ProductoDto producto)
+        public async Task<IActionResult> OnPostAsync(ProductoDto producto)
         {
             if (!ModelState.IsValid)
             {

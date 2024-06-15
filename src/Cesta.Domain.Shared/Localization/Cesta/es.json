@@ -10,8 +10,10 @@
     "Enum:ProductoType.2": "Equipamiento",
     "Enum:MascotaType.0": "Perro",
     "Enum:MascotaType.1": "Gato",
-    "ProductoType": "Producto",
-    "MascotaType": "Mascota",
+    "ProductoType": "Tipo de producto",
+    "MascotaType": "Tipo de mascota",
+    "Price": "Precio",
+    "CreationTime": "Momento de creación",
     "Menu:Cesta": "Tienda",
     "Menu:Carrito": "Carrito",
     "Menu:CRUDProductos": "Manejo de productos",
@@ -37,6 +39,8 @@
     "Total": "Total",
     "NecesitasInicioSesion": "No tienes sesión iniciada",
     "esPagoSeguro": "¿Es este pago seguro?",
-    "politicaCookies":  "Política de cookies"
+    "politicaCookies": "Política de cookies",
+    "Edit": "Editar",
+    "Name": "Nombre"
   }
 }

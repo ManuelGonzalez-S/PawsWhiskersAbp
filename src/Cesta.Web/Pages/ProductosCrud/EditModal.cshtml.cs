@@ -32,10 +32,11 @@ namespace Cesta.Web.Pages.ProductosCrud
             _productoAppService = productoAppService;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(Guid id)
         {
-            var productoDto = await _productoAppService.GetAsync(Id);
-            Producto = ObjectMapper.Map<ProductoDto, CreateUpdateProductoDto>(productoDto);
+            var productoDto = await _productoAppService.GetAsync(id);
+            var productoEntity = ObjectMapper.Map<ProductoDto, Producto>(productoDto);
+            Producto = ObjectMapper.Map<Producto, CreateUpdateProductoDto>(productoEntity);
 
             SelectListMascotaType = Enum.GetValues(typeof(MascotaType))
                                          .Cast<MascotaType>()
@@ -56,15 +57,27 @@ namespace Cesta.Web.Pages.ProductosCrud
             Producto.ImageBase64 = productoDto.ImageBase64;
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostEditAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
+                if (ModelState.IsValid || (ModelState.ErrorCount == 1 && ModelState["auxiliar"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
+                {
+                    await _productoAppService.UpdateAsync(Id, Producto);
+                    return new JsonResult(new { success = true });
+
+                }
+                else
+                {
+                    var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                    return new JsonResult(new { success = false, errors = errorMessages });
+                }
+            }catch(Exception ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
             }
 
-            await _productoAppService.UpdateAsync(Id, Producto);
-            return NoContent();
+            
         }
 
         public IFormFile Base64ToIFormFile(string base64String, string fileName)

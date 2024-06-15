@@ -38,6 +38,22 @@ namespace Cesta.Productos
             _currentUser = currentUser;
         }
 
+        public async Task<ProductoDto> CreateAsync(ProductoDto productoDto)
+        {
+            if (productoDto == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            var producto = _mapper.Map<Producto>(productoDto);
+            var entityTask = _productoRepository.InsertAsync(producto);
+            var entity = entityTask.Result;
+            var entityDto = _mapper.Map<ProductoDto>(entity);
+
+
+            return entityDto;
+        }
+
         public async Task<ProductoDto> GetByIdAsync(Guid id)
         {
             var productosList = await _productoRepository.GetListAsync();

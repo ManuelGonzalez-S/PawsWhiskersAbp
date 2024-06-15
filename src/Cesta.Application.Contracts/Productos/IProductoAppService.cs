@@ -16,6 +16,9 @@ namespace Cesta.Productos
         PagedAndSortedResultRequestDto, //Used for paging/sorting
         CreateUpdateProductoDto>
     {
+
+        Task<ProductoDto> CreateAsync(ProductoDto producto);
+
         Task<List<ProductoDto>> ListAsync();
 
         Task<ProductoDto> GetByIdAsync(Guid id);

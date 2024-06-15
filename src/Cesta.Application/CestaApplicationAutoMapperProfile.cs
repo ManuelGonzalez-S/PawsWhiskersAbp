@@ -13,10 +13,10 @@ public class CestaApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
 
         CreateMap<Producto, ProductoDto>().ReverseMap();
-        CreateMap<CreateUpdateProductoDto, Producto>();
+        CreateMap<CreateUpdateProductoDto, Producto>().ReverseMap();
 
         CreateMap<Pedido, PedidoDto>().ReverseMap();
-        CreateMap<CreateUpdatePedidoDto, Pedido>();
+        CreateMap<CreateUpdatePedidoDto, Pedido>().ReverseMap();
 
     }
 }
