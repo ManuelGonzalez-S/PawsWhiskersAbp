@@ -73,103 +73,90 @@ async function eliminarCarrito(idProducto) {
 
 // Función para recargar la lista de pedidos (debes adaptarla según tu implementación específica)
 async function reloadPedidoList() {
-    // Mostrar el GIF de carga mientras se reconstruye la lista de pedidos
     showLoadingAlert('Recargando lista de pedidos...');
 
     try {
-        // Vaciar la lista de productos antes de reconstruir
-        $('#listaPedidos').empty();
+        $('#loadingGif').show();
+        $('#listaPedidos').empty().hide();
+        $('#sectionCesta').remove(); // Elimina cualquier #sectionCesta existente
 
-        // Obtener los pedidos del usuario actual de manera asíncrona
         const listaPedidos = await cesta.pedidos.pedido.getListByCurrentUser();
 
         if (listaPedidos.length >= 1) {
 
-            // Reconstruir la lista de productos en la página
-            listaPedidos.forEach(async pedido => {
-                // Obtener el producto correspondiente al pedido
-                const producto = await obtenerProductoPorId(pedido.productoId);
+            const promises = listaPedidos.map(pedido => obtenerProductoPorId(pedido.productoId));
 
+            const productos = await Promise.all(promises);
 
-                let imagenSrc = '';
-                console.log(producto.MascotaType)
-                if (producto.ImageBase64 != null) {
-                    imagenSrc = `data:image/png;base64,${producto.ImageBase64}`;
-                } else {
-                    if (producto.MascotaType === 'Perro') {
-                        imagenSrc = `data:image/png;base64,${imagenPerritoBase64}`;
-                    } else {
-                        imagenSrc = `data:image/png;base64,${imagenGateteBase64}`;
-                    }
-                }
-                // Generar el HTML para cada producto
+            let totalPrecio = productos.reduce((total, producto) => total + producto.Price, 0);
+
+            productos.forEach(producto => {
+                let imagenSrc = producto.ImageBase64 ? `data:image/png;base64,${producto.ImageBase64}` :
+                    (producto.MascotaType === 'Perro' ? `data:image/png;base64,${imagenPerritoBase64}` :
+                        `data:image/png;base64,${imagenGateteBase64}`);
+
                 const productoHTML = `
-                <div class="card-body cardProducto col-md-4">
-                    <img class="imagenProducto" alt="${producto.nombre}" src="${imagenSrc}" class="card-img-top">
-                    <h5 class="card-title">${producto.nombre}</h5>
-                    <p class="card-text">Descripción: ${producto.Description}</p>
-                    <p class="card-text">Para: ${producto.MascotaType}</p>
-                    <p class="card-text">Tipo: ${producto.ProductoType}</p>
-                    <p class="card-text">Precio: ${producto.Price}€</p>
-                    <abp-button class="btnEliminarDeCesta active btn" onclick="eliminarCarrito('${producto.id}')">
-                        <i class="bi bi-trash-fill"></i>` + l('EliminarDeCesta') + `
-                    </abp-button>
-                </div>
-                `;
+                    <div class="card-body cardProducto col-md-4">
+                        <img class="imagenProducto" alt="${producto.nombre}" src="${imagenSrc}" class="card-img-top">
+                        <h5 class="card-title">${producto.nombre}</h5>
+                        <p class="card-text">Descripción: ${producto.Description}</p>
+                        <p class="card-text">Para: ${producto.MascotaType}</p>
+                        <p class="card-text">Tipo: ${producto.ProductoType}</p>
+                        <p class="card-text">Precio: ${producto.Price}€</p>
+                        <abp-button class="btnEliminarDeCesta active btn" onclick="eliminarCarrito('${producto.id}')">
+                            <i class="bi bi-trash-fill"></i> ${l('EliminarDeCesta')}
+                        </abp-button>
+                    </div>`;
 
-                // Agregar el HTML del producto a la lista de pedidos
-                 $('#listaPedidos').append(productoHTML);
+                $('#listaPedidos').append(productoHTML);
             });
 
-            var pagosHtml = `<div id="sectionCesta">
-                    <button class="btn-compra btn">
-                        <i class="fab fa-cc-visa fa-lg"></i> ` + l('FinalizarCompra') + `
-                    </button>
-                    <button class="btn-compra btn">
-                        <i class="fab fa-cc-paypal fa-lg"></i> ` + l('FinalizarCompra') + `
-                    </button>
-                    <button class="btn-compra btn">
-                        <i class="fab fa-cc-mastercard fa-lg"></i> ` + l('FinalizarCompra') + `
-                    </button>
-                    <button class="btn-compra btn">
-                        <i class="fab fa-cc-apple-pay fa-lg"></i> ` + l('FinalizarCompra') + `
-                    </button>
-                </div>`;
+            var totalTarjeta = `<div id="sectionCesta">
+                                    <div id="totalPrecio">
+                                        ${l('Total')} : ${totalPrecio} <i class="fas fa-euro-sign"></i>
+                                    </div>
 
-            $('#listaPedidos').after(pagosHtml);
+                                    <abp-button id="btn-iniciarPago" onclick="showAlertPayment()">
+                                        <i class="far fa-credit-card"></i> ${l('FinalizarCompra')}
+                                    </abp-button>
+                                </div>`;
 
-            // Simulamos una pequeña espera para demostrar la carga
+            // Agrega #sectionCesta dentro de #listaPedidos al final
+            $('#listaPedidos').append(totalTarjeta);
+
             await new Promise(resolve => setTimeout(resolve, 1000)); // Tiempo de espera simulado
 
-            // Mostrar la lista de pedidos nuevamente
+            $('#loadingGif').hide();
             $('#listaPedidos').show();
 
         } else {
-
             var noProductos = `<div id="MensajeSinPedidosCesta" class="col-md-4">
-                    <div id="textoSinPedidosCesta">
-                        <p id="pSinProductosCesta">` + l('NoPedidos') + `</p>
-                    </div>
-                </div>
-                <div id="MensajeSinPedidosCesta" class="col-md-4">
-                    <a href="/Productos" class="btn-redirigir">
-                        <i class="fas fa-shipping-fast"></i> `+ l('IrCatalogo') + `
-                    </a>
-                </div>`;
+                                    <div id="textoSinPedidosCesta">
+                                        <p id="pSinProductosCesta">${l('NoPedidos')}</p>
+                                    </div>
+                                </div>
+                                <div id="MensajeSinPedidosCesta" class="col-md-4">
+                                    <a href="/Productos" class="btn-redirigir">
+                                        <i class="fas fa-shipping-fast"></i> ${l('IrCatalogo')}
+                                    </a>
+                                </div>`;
 
             $('#listaPedidos').append(noProductos);
-
+            $('#loadingGif').hide();
+            Swal.close();
         }
 
-        
     } catch (error) {
         console.error('Error al cargar la lista de productos:', error);
+        showErrorAlert('Error al cargar la lista de productos.');
     } finally {
-        // Ocultar el GIF de carga una vez que la lista de pedidos se ha cargado
         $('#loadingGif').hide();
-        Swal.close(); // Cierra el popup de carga una vez que la lista de pedidos se ha cargado
+        Swal.close();
     }
 }
+
+
+
 
 async function obtenerProductoPorId(idProducto) {
     try {
@@ -246,32 +233,108 @@ function showLoadingAlert(message, duration = null) {
 }
 
 function showAlertPayment() {
-    Swal.fire({
+    return Swal.fire({
         title: 'Elige un método de pago',
         html: `
-                <div id="sectionCesta" style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
-                    <abp-button class="btn-compra" style="display: flex; align-items: center; justify-content: center; width: 100%;" onclick="handlePayment('visa')">
-                        <i class="fab fa-cc-visa fa-lg" style="margin-right: 10px;"></i> Finalizar Compra
-                    </abp-button>
-                    <abp-button class="btn-compra" style="display: flex; align-items: center; justify-content: center; width: 100%;" onclick="handlePayment('paypal')">
-                        <i class="fab fa-cc-paypal fa-lg" style="margin-right: 10px;"></i> Finalizar Compra
-                    </abp-button>
-                    <abp-button class="btn-compra" style="display: flex; align-items: center; justify-content: center; width: 100%;" onclick="handlePayment('mastercard')">
-                        <i class="fab fa-cc-mastercard fa-lg" style="margin-right: 10px;"></i> Finalizar Compra
-                    </abp-button>
-                    <abp-button class="btn-compra" style="display: flex; align-items: center; justify-content: center; width: 100%;" onclick="handlePayment('apple-pay')">
-                        <i class="fab fa-cc-apple-pay fa-lg" style="margin-right: 10px;"></i> Finalizar Compra
-                    </abp-button>
-                </div>
-            `,
-        showConfirmButton: false, // Oculta el botón de confirmación predeterminado
+            <div id="sectionCesta" style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+                <abp-button class="btn-pago visa" data-value="visa" onclick="handlePayment(visa)">
+                    <i class="fab fa-cc-visa fa-lg"></i> Finalizar Compra
+                </abp-button>
+                <abp-button class="btn-pago paypal" data-value="paypal" onclick="handlePayment('paypal')">
+                    <i class="fab fa-cc-paypal fa-lg"></i> Finalizar Compra
+                </abp-button>
+                <abp-button class="btn-pago mastercard" data-value="mastercard" onclick="handlePayment('mastercard')">
+                    <i class="fab fa-cc-mastercard fa-lg"></i> Finalizar Compra
+                </abp-button>
+                <abp-button class="btn-pago apple-pay" data-value="apple-pay" onclick="handlePayment('apple-pay')">
+                    <i class="fab fa-cc-apple-pay fa-lg"></i> Finalizar Compra
+                </abp-button>
+                <abp-button class="btn-pago google-pay" data-value="google-pay" onclick="handlePayment('google-pay')">
+                    <i class="fab fa-google-pay"></i> Finalizar Compra
+                </abp-button>
+                <abp-button class="btn-pago bitcoin" data-value="bitcoin onclick="handlePayment('bitcoin')">
+                    <i class="fab fa-bitcoin"></i> Finalizar Compra
+                </abp-button>
+            </div>
+        `,
+        showConfirmButton: false,
+        showCloseButton: true,
+        closeButtonHtml: '&times;',
+        allowOutsideClick: false,
+        footer: `<a href="#">${l('esPagoSeguro')}</a>`,
         customClass: {
-            popup: 'my-popup' // Agregar una clase personalizada para estilos adicionales
+            popup: 'my-popup',
+            closeButton: 'custom-close-button' // Clase personalizada para el botón de cerrar
+        },
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.close) {
+            return null; // El usuario cerró el modal sin seleccionar nada
+        } else {
+            const selectedValue = result.value;
+            return selectedValue;
         }
     });
 }
 
+
 function handlePayment(method) {
     // Lógica para manejar la selección de pago
-    Swal.fire(`Has seleccionado ${method}`);
+    Swal.fire(`Has pagado ${method}`);
 }
+
+function showErrorAlert(message) {
+    console.log(message);
+
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+        footer: '<a href="">Why do I have this issue?</a>',
+        customClass: {
+            container: 'my-swal',
+            popup: 'my-popup',
+            header: 'my-header',
+            title: 'my-title',
+            closeButton: 'my-close-button',
+            icon: 'my-icon',
+            image: 'my-image',
+            content: 'my-content',
+            input: 'my-input',
+            actions: 'my-actions',
+            confirmButton: 'my-confirm-button',
+            cancelButton: 'my-cancel-button',
+            footer: 'my-footer'
+        },
+        backdrop: 'rgba(0,0,123,0.4)',
+        width: '50%',
+        padding: '1em',
+        //timer: 5000,
+        timerProgressBar: true,
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#3085d6',
+        showCancelButton: true,
+        showCloseButton: true,
+        closeButtonHtml: '&times;',
+        allowOutsideClick: false,
+        allowEscapeKey: true,
+        allowEnterKey: false,
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log('User clicked the confirm button');
+        } else if (result.isDismissed) {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                console.log('User clicked the cancel button');
+            } else if (result.dismiss === Swal.DismissReason.backdrop) {
+                console.log('User clicked outside the modal');
+            } else if (result.dismiss === Swal.DismissReason.close) {
+                console.log('User clicked the close button');
+            } else if (result.dismiss === Swal.DismissReason.esc) {
+                console.log('User pressed the Esc key');
+            }
+        }
+    });
+}
+

@@ -34,6 +34,9 @@
     "formatoImagenMalo": "El formato del archivo no es válido",
     "EliminarDeCesta": "Borrar",
     "VolverCatalogo": "Volver",
-    "Total":  "Total"
+    "Total": "Total",
+    "NecesitasInicioSesion": "No tienes sesión iniciada",
+    "esPagoSeguro": "¿Es este pago seguro?",
+    "politicaCookies":  "Política de cookies"
   }
 }

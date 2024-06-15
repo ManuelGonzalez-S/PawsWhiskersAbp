@@ -78,12 +78,6 @@ public class LoginModel : AccountPageModel
     public virtual async Task<IActionResult> OnGetAsync()
     {
 
-        throw new NotImplementedException();
-        //if (_currentUser.IsAuthenticated)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         LoginInput = new LoginInputModel();
 
         ExternalProviders = await GetExternalProviders();

@@ -18,27 +18,6 @@ body {
     margin-top: 10px;
 }
 
-.btn-compra {
-    padding: 10px; /* Ajustar el padding según sea necesario */
-    text-decoration: none;
-    color: white;
-    border-radius: 20px;
-    background-color: rgb(11, 102, 195);
-    transition: transform 0.3s linear, background-color 0.3s linear;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* Asegurar que los botones ocupen todo el ancho disponible */
-}
-
-.btn-compra:hover {
-    color: white;
-    transform: translate(0px, -5px);
-    background-color: rgb(8, 75, 144);
-    cursor: pointer;
-}
-
-
 #btnVolverCatalogo {
     font-size: 1.1em;
     transition: transform 0.3s linear, background-color 0.3s linear, border-color 0.08s linear, color 0.3s linear;
@@ -126,4 +105,152 @@ body {
 .btnEliminarDeCesta:hover {
     transform: translate(0px, -5px);
     background-color: rgb(240, 128, 128) !important;
+}
+
+.custom-close-button {
+    font-size: 20px; /* Tamaño de la fuente */
+    color: #d33; /* Color del texto */
+    border: none; /* Sin borde */
+    background: none; /* Sin fondo */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    outline: none; /* Quitar el borde del cuadro cuando está enfocado */
+}
+
+.custom-close-button:focus {
+    outline: none; /* Quitar el borde del cuadro cuando está enfocado */
+}
+
+.custom-close-button:hover {
+    color: #f00; /* Color al pasar el ratón */
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+#btn-iniciarPago {
+    display: inline-block;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #28a745;
+    border: 2px solid #28a745;
+    cursor: pointer;
+    outline: none;
+    margin: 20px;
+    animation: bounce 1.5s infinite;
+}
+
+#btn-iniciarPago:hover,
+#btn-iniciarPago:focus {
+    background-color: #218838;
+    border-color: #218838;
+    transform: scale(1.05);
+}
+
+#btn-iniciarPago i {
+    margin-right: 10px;
+}
+
+
+.btn-pago {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    color: #fff;
+    border: 2px solid;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+    outline: none;
+    margin: 10px;
+}
+
+.btn-pago:hover,
+.btn-pago:focus {
+    transform: scale(1.05);
+}
+
+.visa {
+    background-color: #1a1f71;
+    border-color: #1a1f71;
+}
+
+.visa:hover,
+.visa:focus {
+    background-color: #14206d;
+    border-color: #14206d;
+}
+
+.paypal {
+    background-color: #003087;
+    border-color: #003087;
+}
+
+.paypal:hover,
+.paypal:focus {
+    background-color: #002775;
+    border-color: #002775;
+}
+
+.mastercard {
+    background-color: #ff5f00;
+    border-color: #ff5f00;
+}
+
+.mastercard:hover,
+.mastercard:focus {
+    background-color: #e65500;
+    border-color: #e65500;
+}
+
+.apple-pay {
+    background-color: #000;
+    border-color: #000;
+}
+
+.apple-pay:hover,
+.apple-pay:focus {
+    background-color: #333;
+    border-color: #333;
+}
+
+.google-pay {
+    background-color: #4285f4;
+    border-color: #4285f4;
+}
+
+.google-pay:hover,
+.google-pay:focus {
+    background-color: #3367d6;
+    border-color: #3367d6;
+}
+
+.bitcoin {
+    background-color: #f7931a;
+    border-color: #f7931a;
+}
+
+.bitcoin:hover,
+.bitcoin:focus {
+    background-color: #e67e00;
+    border-color: #e67e00;
+}
+
+/* Estilos para los íconos dentro del botón */
+.btn-pago i {
+    margin-right: 10px;
 }

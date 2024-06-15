@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Volo.Abp.Users;
+using Microsoft.Extensions.Localization;
+using Cesta.Localization;
 
 namespace Cesta.Web.Pages.Cesta
 {
@@ -15,41 +18,58 @@ namespace Cesta.Web.Pages.Cesta
         #region Binding
         private readonly IProductoAppService _productoAppService;
         private readonly IPedidoAppService _pedidoAppService;
+        private readonly ICurrentUser _currentUser;
+        private readonly IStringLocalizer<CestaResource> _localizer;
 
         public List<PedidoDto> ListaPedidos { get; set; } = new List<PedidoDto>();
         public List<ProductoDto> ListaProductos { get; set; } = new List<ProductoDto>();
 
         public float totalPrecio { get; set; } = 0;
 
+        public Guid idUsuarioActual { get; set; }
+
+        public string AlertMessage { get; set; }
         #endregion
 
         #region Constructor
-        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService)
+        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService, ICurrentUser currentUser, IStringLocalizer<CestaResource> localizer)
         {
             _productoAppService = productoAppService;
             _pedidoAppService = pedidoAppService;
+            _currentUser = currentUser;
+            _localizer = localizer;
+
+            idUsuarioActual = _currentUser.Id == null ? Guid.Empty : (Guid)_currentUser.Id;
         }
         #endregion
 
         #region Get
         public async Task OnGetAsync()
         {
+
             try
             {
-                ListaPedidos = await _pedidoAppService.GetListByCurrentUser();
-
-                foreach(var item in ListaPedidos)
+                if (idUsuarioActual == Guid.Empty)
                 {
-                    var producto = await _productoAppService.GetByIdAsync(item.ProductoId);
-                    ListaProductos.Add(producto);
-
-                    totalPrecio += producto.Price;
+                    AlertMessage = _localizer["NecesitasInicioSesion"];
                 }
+                else
+                {
+                    // Lógica para cargar la lista de pedidos y productos
+                    ListaPedidos = await _pedidoAppService.GetListByCurrentUser();
 
+                    foreach (var item in ListaPedidos)
+                    {
+                        var producto = await _productoAppService.GetByIdAsync(item.ProductoId);
+                        ListaProductos.Add(producto);
+
+                        totalPrecio += producto.Price;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                // Handle the error (e.g., show a message to the user)
+                AlertMessage = $"An error occurred: {ex.Message}";
             }
         }
         #endregion
