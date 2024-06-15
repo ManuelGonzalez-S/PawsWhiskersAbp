@@ -33,18 +33,35 @@ $(document).ready(async function () {
         }
     });
 
-    editModal.onResult(function () {
-        abp.notify.info(l('ProductoEditedSuccesfully'));
-        dataTable.ajax.reload();
+    editModal.onResult(function (event, jqXHR) {
+        try {
+            const result = jqXHR.responseText;
+            console.log(result);
+
+            if (result.success) {
+                abp.notify.info(l('ProductoEditedSuccesfully'));
+                dataTable.ajax.reload();
+            } else {
+                if (result.errors) {
+                    // Mostrar todos los errores de validación
+                    result.errors.forEach(function (error) {
+                        abp.notify.error(error);
+                    });
+                } else {
+                    abp.notify.error(result.message || l('UnexpectedError'));
+                }
+            }
+        } catch (e) {
+            console.error('Error parsing JSON response', e);
+            abp.notify.error(l('UnexpectedError'));
+        }
     });
+
 
     $('#NewProductoButton').click(function (e) {
         e.preventDefault();
         createModal.open();
     });
-
-
-
 
 
 
@@ -123,6 +140,20 @@ function cargarTabla() {
                     }
                 },
                 {
+                    title: l('MascotaType'),
+                    data: "mascotaType",
+                    render: function (data) {
+                        return l('Enum:MascotaType.' + data);
+                    }
+                },
+                {
+                    title: l('Price'),
+                    data: "price",
+                    render: function (data) {
+                        return data + '€';
+                    }
+                },
+                {
                     title: l('CreationTime'),
                     data: "creationTime",
                     render: function (data) {
@@ -131,18 +162,6 @@ function cargarTabla() {
 
                         return fecha.format("DD/MM/YYYY");
                     }
-                },
-                {
-                    title: l('Price'),
-                    data: "price"
-                },
-                {
-                    title: l('MascotaType'),
-                    data: "mascotaType",
-                    render: function (data) {
-                        return l('Enum:MascotaType.' + data);
-                    }
-
                 }
             ]
         })

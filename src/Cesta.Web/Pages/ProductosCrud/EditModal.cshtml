@@ -1,4 +1,5 @@
-﻿@using Cesta.Localization
+﻿@page
+@using Cesta.Localization
 @using Cesta.Web.Pages.ProductosCrud
 @using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
@@ -81,7 +82,6 @@
         <form asp-page-handler="Edit" method="post">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger">
-                
             </div>
             <input type="hidden" asp-for="Id" />
 

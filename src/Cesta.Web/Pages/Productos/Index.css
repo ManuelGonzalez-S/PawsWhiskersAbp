@@ -32,7 +32,7 @@ body {
 }
 
 .cardProducto {
-    background-color: rgba(245, 245, 220, 1);
+    background-color: rgb(245, 245, 220);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -43,7 +43,7 @@ body {
 }
 
 .cardProducto:hover {
-    background-color: rgba(230, 230, 207, 1);
+    background-color: rgb(230, 230, 207);
 }
 
 .imagenProducto {
@@ -141,3 +141,50 @@ body {
     border: 2px solid white;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
+
+.btnIniciaSesionParaAgregar {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: rgb(245, 245, 220);
+    color: #333;
+    border: 3px dashed #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btnIniciaSesionParaAgregar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btnIniciaSesionParaAgregar:hover::before {
+    opacity: 1;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.btnIniciaSesionParaAgregar:hover {
+    animation: bounce 0.5s infinite;
+}
+
+

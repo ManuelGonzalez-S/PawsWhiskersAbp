@@ -74,8 +74,8 @@ namespace Cesta.Web.Pages.ProductosCrud
                 var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                 return new JsonResult(new { success = false, errors = errorMessages });
             }
-
-
+                
+            
         }
     }
 }
