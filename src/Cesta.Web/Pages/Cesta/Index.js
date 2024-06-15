@@ -95,8 +95,6 @@ async function reloadPedidoList() {
 
                 var cantidad = await cesta.pedidos.pedido.getPedidoDtoByProductoId(`${producto.id}`);
 
-                debugger;
-
                 totalPrecio += (producto.price * cantidad.cantidad);
 
                 var productoHTML = `<div class="card-body cardProducto col-md-4">`;
@@ -132,10 +130,16 @@ async function reloadPedidoList() {
                         </div>
                     </div>
                     <div id="divBoton">
-                        <div class="divSumarRestar">
-                            <abp-button class="btnSumarRestar btnRestar" onclick=""> - </abp-button>
-                            <div class="btnSumarRestar cantidadPedido">${cantidad.cantidad}</div>
-                            <abp-button class="btnSumarRestar btnSumar" onclick=""> + </abp-button>
+                        <div class="divSumarRestar">`;
+
+                debugger;
+                if (cantidad.cantidad == 1) {
+                    productoHTML += `<abp-button class="btnSumarRestar btnRestar" disabled="disabled" onclick="restarCantidad('${producto.id}', event)"> - </abp-button>`;
+                } else {
+                    productoHTML += `<abp-button class="btnSumarRestar btnRestar" onclick="restarCantidad('${producto.id}', event)"> - </abp-button>`;
+                }
+                productoHTML += `<div  id="producto-${(producto.id)}" class="btnSumarRestar cantidadPedido">${cantidad.cantidad}</div>
+                            <abp-button class="btnSumarRestar btnSumar" onclick="sumarCantidad('${producto.id}', event)"> + </abp-button>
                         </div>
                         <abp-button class="btnEliminarDeCesta" onclick="eliminarCarrito('${producto.id}')"> <i class="bi bi-trash-fill"></i> ${l('EliminarDeCesta')} </abp-button>
                     </div>
@@ -148,7 +152,7 @@ async function reloadPedidoList() {
 
             var totalTarjeta = `<div id="sectionCesta">
                                     <div id="totalPrecio">
-                                        ${l('Total')} : ${totalPrecio} <i class="fas fa-euro-sign"></i>
+                                        ${l('Total')} : <span id="totalPrecioCantidad">${totalPrecio}</span> <i class="fas fa-euro-sign"></i>
                                     </div>
                                     <abp-button id="btn-iniciarPago" onclick="showAlertPayment()">
                                         <i class="far fa-credit-card"></i> ${l('FinalizarCompra')}
@@ -257,3 +261,120 @@ function showErrorAlert(mensaje) {
         confirmButtonText: 'OK'
     });
 }
+
+
+
+async function sumarCantidad(productId, event) {
+    // Verificar que el evento se pasa correctamente
+    if (!event) {
+        console.error('Evento no definido');
+        return;
+    }
+
+    const elemento = event.target;
+    console.log('Elemento que disparó el evento:', elemento);
+
+    // Obtener el contenedor principal del conjunto de botones y cantidad
+    const contenedor = elemento.closest('.divSumarRestar');
+    if (!contenedor) {
+        console.error('Contenedor divSumarRestar no encontrado');
+        return;
+    }
+
+    // Obtener el botón de restar dentro del mismo contenedor
+    const botonRestar = contenedor.querySelector('.btnRestar');
+    console.log('Botón Restar:', botonRestar);
+
+    // Obtener el elemento de la cantidad actual
+    const cantidadElemento = contenedor.querySelector(`#producto-${productId}`);
+    console.log('Cantidad Elemento:', cantidadElemento);
+
+    if (cantidadElemento) {
+        let cantidadActual = parseInt(cantidadElemento.innerText);
+
+        // Incrementar la cantidad
+        cantidadActual += 1;
+
+        // Simular las llamadas a funciones asincrónicas (ajusta según tu lógica real)
+        const producto = await cesta.productos.producto.getById(productId);
+        const pedidoUser = await cesta.pedidos.pedido.getPedidoDtoByProductoId(productId);
+
+        const totalPrecio = document.querySelector(`#totalPrecioCantidad`);
+        let totalCantidad = parseFloat(totalPrecio.innerText);
+
+        totalCantidad += producto.price;
+        totalCantidad = totalCantidad.toFixed(2);
+
+        totalPrecio.innerText = totalCantidad;
+
+        // Actualizar la cantidad en el DOM
+        cantidadElemento.innerText = cantidadActual;
+
+        botonRestar.disabled = false;
+
+        // Llamada AJAX (descomentada si es necesario)
+        // $.ajax({
+        //     url: '/api/Carrito/SumarCantidad',
+        //     type: 'POST',
+        //     data: { productoId: productId },
+        //     success: function(response) {
+        //         // Manejar la respuesta si es necesario
+        //     },
+        //     error: function(error) {
+        //         // Manejar el error si es necesario
+        //     }
+        // });
+    } else {
+        console.error(`Elemento con ID producto-${productId} no encontrado.`);
+    }
+}
+
+
+async function restarCantidad(productId, event) {
+    // Obtener el elemento de la cantidad actual
+    const cantidadElemento = document.querySelector(`#producto-${productId}`);
+
+    console.log(cantidadElemento);
+
+    if (cantidadElemento) {
+        let cantidadActual = parseInt(cantidadElemento.innerText);
+
+        // Incrementar la cantidad
+        cantidadActual -= 1;
+
+        var producto = await cesta.productos.producto.getById(productId);
+
+        var totalPrecio = document.querySelector(`#totalPrecioCantidad`);
+
+        var totalCantidad = parseFloat(totalPrecio.innerText)
+
+        totalCantidad -= producto.price;
+
+        totalCantidad = totalCantidad.toFixed(2);
+
+        totalPrecio.innerText = totalCantidad;
+
+        // Actualizar la cantidad en el DOM
+        cantidadElemento.innerText = cantidadActual;
+
+        if (cantidadActual == 1) {
+            event.target.disabled = true;
+        }
+
+        // Aquí puedes hacer una llamada AJAX para actualizar la cantidad en el servidor si es necesario
+        // $.ajax({
+        //     url: '/api/Carrito/SumarCantidad',
+        //     type: 'POST',
+        //     data: { productoId: productId },
+        //     success: function(response) {
+        //         // Manejar la respuesta si es necesario
+        //     },
+        //     error: function(error) {
+        //         // Manejar el error si es necesario
+        //     }
+        // });
+    } else {
+        console.error(`Elemento con ID producto-${productId} no encontrado.`);
+    }
+}
+

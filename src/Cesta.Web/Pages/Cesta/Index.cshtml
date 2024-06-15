@@ -114,10 +114,20 @@
                             </div>
                             <div id="divBoton">
                                 <div class="divSumarRestar">
-                                    <abp-button class="btnSumarRestar btnRestar" onclick=""> - </abp-button>
-                                    <div class="btnSumarRestar cantidadPedido">@cantidad.Cantidad</div>
-                                    <abp-button class="btnSumarRestar btnSumar" onclick=""> + </abp-button>
+                                    
+                                    @if(cantidad.Cantidad == 1)
+                                    {
+                                        <abp-button class="btnSumarRestar btnRestar" disabled="true" onclick="restarCantidad('@producto.Id', event)"> - </abp-button>
+                                    }
+                                    else
+                                    {
+                                        <abp-button class="btnSumarRestar btnRestar" onclick="restarCantidad('@producto.Id', event)"> - </abp-button>
+                                    }
+
+                                    <div id="producto-@producto.Id" class="btnSumarRestar cantidadPedido">@cantidad.Cantidad</div>
+                                    <abp-button class="btnSumarRestar btnSumar" onclick="sumarCantidad('@producto.Id', event)"> + </abp-button>
                                 </div>
+
                                 <abp-button class="btnEliminarDeCesta" onclick="eliminarCarrito('@producto.Id')"> <i class="bi bi-trash-fill"></i> @L["EliminarDeCesta"] </abp-button>
                             </div>
                         </div>
@@ -125,7 +135,7 @@
 
                     <div id="sectionCesta">
                         <div id="totalPrecio">
-                            @L["Total"] : @Model.totalPrecio <i class="fas fa-euro-sign"></i>
+                            @L["Total"] : <span id="totalPrecioCantidad">@Model.totalPrecio</span> <i class="fas fa-euro-sign"></i>
                         </div>
 
                         <abp-button id="btn-iniciarPago" onclick="showAlertPayment()">
