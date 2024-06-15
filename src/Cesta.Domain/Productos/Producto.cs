@@ -18,7 +18,7 @@ namespace Cesta.Productos
 
         public string Description { get; set; }
 
-        public float? Price { get; set; }
+        public float Price { get; set; }
 
         public string? ImageBase64 { get; set; }
 

@@ -123,8 +123,6 @@ namespace Cesta.Pedidos
 
             var idUser = _currentUser.Id;
 
-            Check.NotNull(idUser, nameof(idUser));
-
             // Obtener la lista de pedidos y filtrar por el idGuid
             var resultado = await _pedidoAppRepository.GetListAsync();
 
@@ -152,22 +150,30 @@ namespace Cesta.Pedidos
 
             var idProducto = await _productoAppService.GetByIdAsync(dto.ProductoId);
 
-            // Obtener la lista de productos desde _productoAppService
-            var listaProductosBBDD = await _productoAppService.ListAsync();
-
             // Recoger la lista de pedidos del usuario en el carrito
             var listPedidosUser = await GetListByCurrentUser();
 
             // Recoger los productos de la lista de pedidos
             List<Producto> listProductosCestaUser = new List<Producto>();
 
-            foreach (var item in listPedidosUser)
+
+
+
+            //RECOGER PRODUCTOS EN LA CESTA DEL USER
+
+            if (idProducto != null)
             {
-                var productoDto = listaProductosBBDD.FirstOrDefault(p => p.Id == item.ProductoId);
-                if (productoDto != null)
+                foreach (var item in listPedidosUser)
                 {
-                    var producto = _mapper.Map<Producto>(productoDto);
-                    listProductosCestaUser.Add(producto);
+
+                    var producto = item.ProductoId;
+
+                    var productoResponse = await _productoAppService.GetByIdAsync(producto);
+
+                    //FILTRAR PARA COGER LOS PRODUCTOS QUE TIENE EL USUARIO
+                    var productoEntity = _mapper.Map<Producto>(productoResponse);
+                    listProductosCestaUser.Add(productoEntity);
+
                 }
             }
 
@@ -181,7 +187,7 @@ namespace Cesta.Pedidos
             var pedido = new Pedido();
 
             pedido.UsuarioId = (Guid)_currentUser.Id;
-            pedido.Cantidad = 0;
+            pedido.Cantidad = 1;
             pedido.ProductoId = idProducto.Id;
 
             // Insertar el pedido en el repositorio
@@ -282,6 +288,39 @@ namespace Cesta.Pedidos
         public override async Task DeleteAsync(Guid id)
         {
             await _pedidoAppRepository.DeleteAsync(id);
+        }
+
+        public async Task<ProductoDto> DeleteByProductoUserId(Guid idProducto)
+        {
+
+            // Asegurarse de que el usuario actual esté autenticado
+            if (_currentUser.Id == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            var userId = _currentUser.Id;
+
+            // Obtener la lista de pedidos del usuario actual
+            List<PedidoDto> listaPedidosUser = await GetListByCurrentUser();
+
+            // Filtrar los pedidos que tienen el mismo productoId y usuarioId
+            var pedidosAEliminar = listaPedidosUser
+                .Where(x => x.UsuarioId == userId && x.ProductoId == idProducto)
+                .ToList();
+
+            // Eliminar el pedido filtrado (aunque solo sea uno)
+            foreach (var pedidoDto in pedidosAEliminar)
+            {
+                await _pedidoAppRepository.DeleteAsync(pedidoDto.Id);
+            }
+
+            // Devolver el ProductoDto del producto eliminado, suponiendo que se quiere devolver alguna información del producto eliminado
+            // Nota: Esto asume que existe un método para obtener un ProductoDto por idProducto
+            var productoDto = await _productoAppService.GetByIdAsync(idProducto);
+
+            return productoDto;
+
         }
         #endregion
 

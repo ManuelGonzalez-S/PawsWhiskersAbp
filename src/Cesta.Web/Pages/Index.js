@@ -18,6 +18,8 @@ $(function () {
             shadowSize: [1, 1],
             iconAnchor: [1, 1],
             popupAnchor: [1, 1]
+        }
+    });
 
 
     var mapIcon = L.Icon.extend({
@@ -51,4 +53,48 @@ $(function () {
 
 function sendEmail() {
     window.location.href = "mailto:pawswhiskers69@gmail.com";
+}
+
+function showWarningAlert(message) {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Warning',
+        text: message,
+    });
+}
+
+function showErrorAlert(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+    });
+}
+
+function showSuccessAlert(message) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: message,
+    });
+}
+
+function showLoadingAlert(message, duration = null) {
+    const swalParams = {
+        title: 'Cargando...',
+        text: message,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    };
+
+    Swal.fire(swalParams);
+
+    if (duration !== null) {
+        setTimeout(() => {
+            Swal.close();
+        }, duration);
+    }
 }

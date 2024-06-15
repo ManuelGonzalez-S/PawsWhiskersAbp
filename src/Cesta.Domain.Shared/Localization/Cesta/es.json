@@ -31,6 +31,9 @@
     "NoProductosEnCatalogo": "No hay productos en el catálogo por el momento",
     "IrCatalogo": "Ir al catálogo",
     "UnexpectedError": "Ups, algo salió mal",
-    "formatoImagenMalo":  "El formato del archivo no es válido"
+    "formatoImagenMalo": "El formato del archivo no es válido",
+    "EliminarDeCesta": "Borrar",
+    "VolverCatalogo": "Volver",
+    "Total":  "Total"
   }
 }

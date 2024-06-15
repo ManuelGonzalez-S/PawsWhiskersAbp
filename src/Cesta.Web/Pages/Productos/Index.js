@@ -33,15 +33,15 @@ function modificarCantidadCarrito(element, idProducto) {
     var cantidadCarrito = document.getElementById('notification-count');
     var cantidad = parseInt(cantidadCarrito.textContent);
 
-    var pedidoCrear = abp.libs.datatables.createAjax(cesta.pedidos.pedido.getList);
-
     $(element).toggleClass('active');
 
     if ($(element).hasClass('active')) {
         cantidad++;
+        abp.libs.datatables.createAjax(cesta.pedidos.pedido.createAsyncGuidProducto(idProducto));
         $(element).html('<i class="fas fa-check"></i> Agregado');
     } else {
         cantidad--;
+        abp.libs.datatables.createAjax(cesta.pedidos.pedido.deleteByProductoUserId(idProducto));
         $(element).html('<i class="fa-solid fa-cart-arrow-down"></i> Agregar a la cesta');
     }
 

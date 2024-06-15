@@ -1,12 +1,12 @@
-using AutoMapper;
-using Cesta.Productos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Volo.Abp.Users;
+using Cesta.Productos;
 using Cesta.Pedidos;
 
 namespace Cesta.Web.Pages.Productos
@@ -14,53 +14,52 @@ namespace Cesta.Web.Pages.Productos
     [AllowAnonymous]
     public class IndexModel : PageModel
     {
-        #region Binding
         private readonly IProductoAppService _productoAppService;
         private readonly IPedidoAppService _pedidoAppService;
+        private readonly ICurrentUser _currentUser;
+
+        public int countCesta { get; set; } = 0;
 
         public List<ProductoDto> ListaProductos { get; set; } = new List<ProductoDto>();
-        #endregion
 
-        #region Constructor
+        [TempData]
+        public string AlertMessage { get; set; }
 
-        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService)
+        public IndexModel(IProductoAppService productoAppService, IPedidoAppService pedidoAppService, ICurrentUser currentUser)
         {
             _productoAppService = productoAppService;
             _pedidoAppService = pedidoAppService;
+            _currentUser = currentUser;
         }
 
-        //public IndexModel(IProductoAppService productoAppService, ILogger<IndexModel> logger)
-        //{
-        //    _productoAppService = productoAppService;
-        //    _logger = logger;
-        //}
-        #endregion
-
-        #region Get
         public async Task OnGetAsync()
         {
             try
             {
                 ListaProductos = await _productoAppService.ListAsync();
+
+                if (_currentUser.IsAuthenticated)
+                {
+                    var pedidosEnCarrito = await _pedidoAppService.GetListByCurrentUser();
+
+                    foreach (var producto in ListaProductos)
+                    {
+                        if (pedidosEnCarrito.Any(p => p.ProductoId == producto.Id))
+                        {
+                            producto.enCarrito = true;
+                            countCesta++;
+                        }
+                    }
+                }
+                else
+                {
+                    AlertMessage = "You need to log in to add products to your cart.";
+                }
             }
             catch (Exception ex)
             {
-                // Handle the error (e.g., show a message to the user)
+                AlertMessage = $"An error occurred: {ex.Message}";
             }
         }
-
-        public async Task<IActionResult> OnGetAñadirProductoACestaAsync()
-        {
-            return new NoContentResult();
-        }
-        #endregion
-
-        #region Post
-
-        public async Task<IActionResult> OnPostAñadirProductoACestaAsync()
-        {
-            return new NoContentResult();
-        }
-        #endregion
     }
 }

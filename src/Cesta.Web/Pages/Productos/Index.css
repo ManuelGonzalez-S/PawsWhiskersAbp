@@ -64,7 +64,6 @@ body {
 }
 
 .enlAgregarCesta:hover {
-    text-decoration: none;
     color: rgb(104, 107, 110);
 }
 
@@ -101,9 +100,11 @@ body {
 }
 
 #sectionCesta {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    align-self: flex-start; /* Alinea al inicio del contenedor */
+    margin-top: 20px; /* Ajusta el margen superior según tu diseño */
+    z-index: 1000; /* Ajusta el z-index según necesidades */
 }
 
 #btn-notification {
