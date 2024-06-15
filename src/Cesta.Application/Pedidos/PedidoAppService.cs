@@ -113,6 +113,25 @@ namespace Cesta.Pedidos
             return pedido;
         }
 
+        public async Task<PedidoDto> GetPedidoDtoByProductoId(Guid idProducto)
+        {
+            if (_currentUser.Id == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            var idUser = _currentUser.Id;
+
+            // Obtener la lista de pedidos y filtrar por el idGuid
+            var resultado = await _pedidoAppRepository.GetListAsync();
+
+            var pedido = resultado.FirstOrDefault(x => x.UsuarioId == idUser && x.ProductoId == idProducto);
+
+            var pedidoDto = _mapper.Map<Pedido, PedidoDto>(pedido);
+            return pedidoDto;
+
+        }
+
         public async Task<List<PedidoDto>> GetListByCurrentUser()
         {
 
@@ -156,11 +175,7 @@ namespace Cesta.Pedidos
             // Recoger los productos de la lista de pedidos
             List<Producto> listProductosCestaUser = new List<Producto>();
 
-
-
-
             //RECOGER PRODUCTOS EN LA CESTA DEL USER
-
             if (idProducto != null)
             {
                 foreach (var item in listPedidosUser)
