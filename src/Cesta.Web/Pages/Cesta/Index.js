@@ -485,7 +485,17 @@ async function pasitosPayment() {
         `,
         showConfirmButton: false,
         showCloseButton: true,
-        allowOutsideClick: false,
+        allowOutsideClick: () => {
+            const popup = Swal.getPopup()
+            popup.classList.remove('swal2-show')
+            setTimeout(() => {
+                popup.classList.add('animate__animated', 'animate__headShake')
+            })
+            setTimeout(() => {
+                popup.classList.remove('animate__animated', 'animate__headShake')
+            }, 500)
+            return false
+        },
         footer: `<a target="_blank" id="esPagoSeguro" href="https://www.amazon.es/gp/help/customer/display.html?nodeId=G9YWZRUPYVB7LPKM">${l('esPagoSeguro')}</a>`,
         customClass: {
             popup: 'my-popup',
@@ -500,25 +510,52 @@ async function pasitosPayment() {
 
 // Función para manejar la selección de pago
 async function handlePayment(selected) {
-
     var tipoTarjeta = selected.dataset.value;
     var direccionData = null;
+    var fechaData = null;
 
-    //POPUP DE DIRECCIÓN
+    // Calcula la fecha de mañana
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowISO = tomorrow.toISOString().split('T')[0];
+
+    // POPUP DE DIRECCIÓN Y FECHA
     await Swal.fire({
-        title: l('InserteDireccion'),
+        title: l('InserteDatosEntrega'),
         html: `
-            <input type="text" id="direccion" class="swal2-input" placeholder="C/ Bernardino Obregón, 25, 28012, Madrid " maxlength="70">
+            <h3 class="tituloInput">` + l('Direccion') + `</h3>
+            <input type="text" id="direccion" class="swal2-input" placeholder="C/ Bernardino Obregón, 25, 28012, Madrid" maxlength="70">
+
+            <h3 class="tituloInput">` + l('FechaEntrega') + `</h3>
+            <input type="date" id="fecha" class="swal2-input" placeholder="Fecha" min="${tomorrowISO}">
         `,
         confirmButtonText: l('Confirm'),
         focusConfirm: false,
+        allowOutsideClick: () => {
+            const popup = Swal.getPopup();
+            popup.classList.remove('swal2-show');
+            setTimeout(() => {
+                popup.classList.add('animate__animated', 'animate__headShake');
+            });
+            setTimeout(() => {
+                popup.classList.remove('animate__animated', 'animate__headShake');
+            }, 500);
+            return false;
+        },
         showCancelButton: true,
         cancelButtonText: l('Cancel'),
         didOpen: () => {
             const popup = Swal.getPopup();
             const direccionInput = popup.querySelector('#direccion');
+            const fechaInput = popup.querySelector('#fecha');
 
             direccionInput.onkeyup = (event) => {
+                if (event.key === 'Enter') {
+                    Swal.clickConfirm();
+                }
+            };
+
+            fechaInput.onkeyup = (event) => {
                 if (event.key === 'Enter') {
                     Swal.clickConfirm();
                 }
@@ -526,22 +563,37 @@ async function handlePayment(selected) {
         },
         preConfirm: () => {
             const direccion = document.getElementById('direccion').value;
+            const fecha = document.getElementById('fecha').value;
 
             if (!direccion) {
                 Swal.showValidationMessage(l('InserteDireccion'));
+            } else if (!fecha) {
+                Swal.showValidationMessage(l('InserteFecha'));
             }
 
-            return { direccion };
+            return { direccion, fecha };
         },
     }).then((result) => {
         if (result.isConfirmed) {
             direccionData = result.value.direccion;
+            fechaData = result.value.fecha;
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
                 title: l('EstasSeguro'),
                 text: l('CancelConfirmation'),
                 icon: 'warning',
                 showCancelButton: true,
+                allowOutsideClick: () => {
+                    const popup = Swal.getPopup();
+                    popup.classList.remove('swal2-show');
+                    setTimeout(() => {
+                        popup.classList.add('animate__animated', 'animate__headShake');
+                    });
+                    setTimeout(() => {
+                        popup.classList.remove('animate__animated', 'animate__headShake');
+                    }, 500);
+                    return false;
+                },
                 confirmButtonText: l('YesCancel'),
                 cancelButtonText: l('NoCancel')
             }).then((confirmCancel) => {
@@ -552,19 +604,13 @@ async function handlePayment(selected) {
         }
     });
 
-    console.log(direccionData);
-
-
-    if (direccionData != null) {
-        //POPUP NOTIFICACION BARRA LATERAL
+    if (direccionData != null && fechaData != null) {
+        // POPUP NOTIFICACION BARRA LATERAL
         await Swal.fire({
-            title: 'Right sidebar 👋',
+            title: l('CompraRealizada'),
             html: `<div>
-
-                    <p>${l('HasComprado', tipoTarjeta, direccionData)}</p>
-
-                </div>
-        `,
+                    <p>${l('HasComprado', tipoTarjeta, direccionData, fechaData)}</p>
+                </div>`,
             position: 'top-end',
             showClass: {
                 popup: `
@@ -581,33 +627,16 @@ async function handlePayment(selected) {
                         `,
             },
             grow: 'column',
-            width: 300,
+            width: 330,
             showConfirmButton: false,
             showCloseButton: true,
-            timer: 2000,
+            timer: 3000,
             timerProgressBar: true,
             showCloseButton: false,
             allowOutsideClick: false,
         });
 
-
         await cesta.pedidos.pedido.borrarPedidosCurrentUser();
-
-
         reloadPedidoList();
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

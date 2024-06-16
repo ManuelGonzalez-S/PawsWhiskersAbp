@@ -4,6 +4,24 @@ body {
     overflow-x: hidden; /* Esto asegurará que no haya desplazamiento horizontal */
 }
 
+#fecha {
+    font-size: 16px; /* Tamaño de la fuente */
+    padding: 10px; /* Espaciado interior */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde del input */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interior */
+    background-color: #fff; /* Color de fondo */
+}
+
+.tituloInput {
+    text-align: start;
+    padding-top: 20px;
+}
+
+.swal2-html-container p {
+    line-height: 1.5;
+}
+
 .swal2-popup.my-popup {
     max-width: none; /* Permitir que el popup ocupe todo el ancho necesario */
     width: auto; /* Ajustar el ancho automáticamente al contenido */
@@ -19,14 +37,14 @@ body {
 }
 
 #totalPrecio {
-    font-size: 18px;  
-    font-weight: bold;
+    font-size: 18px; /* Tamaño de fuente deseado */
+    font-weight: bold; /* Opcional: negrita */
 }
 
 .btnDeshabilitado {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed !important;
     pointer-events: none;
 }
 

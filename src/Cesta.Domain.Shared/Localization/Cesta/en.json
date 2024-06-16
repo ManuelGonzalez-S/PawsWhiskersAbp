@@ -54,6 +54,11 @@
     "Cancelled": "Cancelled",
     "CanceladoProceso": "You cancelled the process",
     "HasComprado": "You have confirmed your purchase with your card {0} at the address {1}.",
-    "CestaSinInicioSesion": "To access this page, you need to be logged in."
+    "CestaSinInicioSesion": "To access this page, you need to be logged in.",
+    "InserteDatosEntrega": "Insert delivery details",
+    "FechaEntrega": "Delivery date",
+    "InserteFecha": "Please insert a date",
+    "CompraRealizada": "Purchase completed",
+    "EnviarCorreo": "send email"
   }
 }

@@ -37,8 +37,8 @@ public class CestaDomainModule : AbpModule
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("en", "en", "English", "gb"));
-            options.Languages.Add(new LanguageInfo("en-GB", "en-GB", "English (UK)"));
             options.Languages.Add(new LanguageInfo("fr", "fr", "Français", "fr"));
+            options.Languages.Add(new LanguageInfo("pt-BR", "pt-BR", "Brasileiro", "pt-BR"));
             options.Languages.Add(new LanguageInfo("es", "es", "Español"));
         });
 
