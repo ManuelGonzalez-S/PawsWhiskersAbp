@@ -173,26 +173,3 @@ function cargarTabla() {
     );
 
 };
-
-    ; (async () => {
-        Toast.fire({
-            icon: 'success',
-            title: 'Success',
-        })
-        Toast.fire({
-            icon: 'error',
-            title: 'Error',
-        })
-        Toast.fire({
-            icon: 'warning',
-            title: 'Warning',
-        })
-        Toast.fire({
-            icon: 'info',
-            title: 'Info',
-        })
-        Toast.fire({
-            icon: 'question',
-            title: 'Question',
-        })
-    })()

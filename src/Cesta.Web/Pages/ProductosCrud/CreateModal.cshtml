@@ -18,7 +18,7 @@
             var nombreFile = file.name;
             console.log(nombreFile);
             $('#msgImagenError').hide();
-            if (!nombreFile.includes(".png") && !nombreFile.includes(".jpg") && !nombreFile.includes(".jepg")) {
+            if (!nombreFile.includes(".png") && !nombreFile.includes(".jpg") && !nombreFile.includes(".jepg") && !nombreFile.includes(".jfif")) {
                 btnCrear.disabled = true;
                 $('#msgImagenError').show();
             } else {
@@ -94,7 +94,7 @@
             <!-- Campo Precio -->
             <div class="form-group">
                 <label for="precio">@L["Precio"]</label>
-                <input type="number" class="form-control" id="precio" asp-for="Producto.Price" oninput="limitInput(this)" />
+                <input type="number" autocomplete="off" class="form-control" id="precio" asp-for="Producto.Price" oninput="limitInput(this)" />
                 <span class="text-danger" asp-validation-for="Producto.Price"></span>
             </div>
 
