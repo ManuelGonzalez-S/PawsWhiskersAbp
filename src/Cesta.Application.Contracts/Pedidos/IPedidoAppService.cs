@@ -14,7 +14,7 @@ namespace Cesta.Pedidos
         PagedAndSortedResultRequestDto, //Used for paging/sorting
         CreateUpdatePedidoDto>
     {
-        Task<PedidoDto> GetById(int id);
+        Task<PedidoDto> GetById(Guid id);
 
         Task<List<PedidoDto>> GetListByCurrentUser();
 
@@ -22,8 +22,10 @@ namespace Cesta.Pedidos
 
         Task<ProductoDto> DeleteByProductoUserId(Guid idProducto);
 
-        Task<PedidoDto> UpdateAsync(Guid id, PedidoDto input);
+        Task<PedidoDto> ModificarAsync(PedidoDto input);
 
         Task<PedidoDto> GetPedidoDtoByProductoId(Guid idProducto);
+
+        Task<bool> borrarPedidosCurrentUser();
     }
 }
