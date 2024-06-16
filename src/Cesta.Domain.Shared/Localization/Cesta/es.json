@@ -49,10 +49,11 @@
     "Confirm": "Confirmar",
     "EstasSeguro": "¿Estás seguro?",
     "CancelConfirmation": "¿Estás seguro de que quieres cancelar?",
-    "YesCancel":  "Sí, cancelar",
+    "YesCancel": "Sí, cancelar",
     "NoCancel": "No, volver",
     "Cancelled": "Cancelado",
     "CanceladoProceso": "Has cancelado el proceso",
-    "HasComprado" :  "Has confirmado tu compra con tu tarjeta {0} en la dirección {1}"
+    "HasComprado": "Has confirmado tu compra con tu tarjeta {0} en la dirección {1}",
+    "CestaSinInicioSesion": "Para acceder a esta página necesitas tener sesión iniciada"
   }
 }

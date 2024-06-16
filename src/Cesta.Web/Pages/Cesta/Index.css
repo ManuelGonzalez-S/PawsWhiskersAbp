@@ -18,6 +18,11 @@ body {
     margin-top: 10px;
 }
 
+#totalPrecio {
+    font-size: 18px;  
+    font-weight: bold;
+}
+
 .btnDeshabilitado {
     background-color: #cccccc;
     color: #666666;

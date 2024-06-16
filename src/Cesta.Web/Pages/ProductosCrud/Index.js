@@ -125,7 +125,10 @@ function cargarTabla() {
                                         cesta.productos.producto
                                             .delete(data.record.id)
                                             .then(function () {
-                                                abp.notify.info(l('SuccessfullyDeleted'));
+                                                Toast.fire({
+                                                    icon: 'success',
+                                                    title: l('SuccessfullyDeleted'),
+                                                })
                                                 dataTable.ajax.reload();
                                             });
                                     }
@@ -173,26 +176,3 @@ function cargarTabla() {
     );
 
 };
-
-    ; (async () => {
-        Toast.fire({
-            icon: 'success',
-            title: 'Success',
-        })
-        Toast.fire({
-            icon: 'error',
-            title: 'Error',
-        })
-        Toast.fire({
-            icon: 'warning',
-            title: 'Warning',
-        })
-        Toast.fire({
-            icon: 'info',
-            title: 'Info',
-        })
-        Toast.fire({
-            icon: 'question',
-            title: 'Question',
-        })
-    })()
