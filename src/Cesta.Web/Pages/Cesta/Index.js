@@ -118,6 +118,8 @@ async function eliminarCarrito(idProducto) {
 async function reloadPedidoList() {
     showLoadingAlert('Recargando lista de pedidos...');
 
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     try {
         $('#loadingGif').show();
         $('#listaPedidos').empty().hide();
@@ -196,7 +198,7 @@ async function reloadPedidoList() {
                                     <div id="totalPrecio">
                                         ${l('Total')} : <span id="totalPrecioCantidad">${totalPrecio}</span> <i class="fas fa-euro-sign"></i>
                                     </div>
-                                    <abp-button id="btn-iniciarPago" onclick="showAlertPayment()">
+                                    <abp-button id="btn-iniciarPago" onclick="pasitosPayment()">
                                         <i class="far fa-credit-card"></i> ${l('FinalizarCompra')}
                                     </abp-button>
                                 </div>`;
@@ -222,6 +224,7 @@ async function reloadPedidoList() {
                                 </div>`;
 
             $('#listaPedidos').append(noProductos);
+            $('#listaPedidos').show();
             $('#loadingGif').hide();
             Swal.close();
         }
@@ -346,18 +349,10 @@ async function sumarCantidad(productId, event) {
 
         habilitar(botonRestar);
 
-        // Llamada AJAX (descomentada si es necesario)
-        // $.ajax({
-        //     url: '/api/Carrito/SumarCantidad',
-        //     type: 'POST',
-        //     data: { productoId: productId },
-        //     success: function(response) {
-        //         // Manejar la respuesta si es necesario
-        //     },
-        //     error: function(error) {
-        //         // Manejar el error si es necesario
-        //     }
-        // });
+        pedidoUser.cantidad = cantidadActual;
+
+        await cesta.pedidos.pedido.modificar(pedidoUser);
+
     } else {
         console.error(`Elemento con ID producto-${productId} no encontrado.`);
     }
@@ -415,6 +410,10 @@ async function restarCantidad(productId, event) {
             deshabilitar(botonRestar)
         }
 
+        pedidoUser.cantidad = cantidadActual;
+
+        await cesta.pedidos.pedido.modificar(pedidoUser);
+
         // await cesta.pedidos.pedido.update(pedidoUser.id, pedidoUser);
 
         // Llamada AJAX (descomentada si es necesario)
@@ -445,52 +444,170 @@ function habilitar(myButton) {
     //myButton.setAttribute('disabled', false); // Habilita funcionalmente el botón
 }
 
-function showAlertPayment() {
+async function handlePayment() {
+    try {
+        const resultado = await showAlertPayment();
+        if (resultado) {
+            Swal.fire(`Has seleccionado ${resultado}`);
+            // Aquí puedes continuar con la lógica para manejar el pago seleccionado
+        } else {
+            Swal.fire('No se seleccionó ningún método de pago.');
+        }
+    } catch (error) {
+        console.error('Error al mostrar el modal de pago:', error);
+    }
+}
+
+async function pasitosPayment() {
     return Swal.fire({
         title: 'Elige un método de pago',
         html: `
             <div id="sectionCesta" style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
-                <abp-button class="btn-pago visa" data-value="visa" onclick="handlePayment('visa')">
+                <abp-button class="btn-pago visa" data-value="Visa" onclick="handlePayment(this)">
                     <i class="fab fa-cc-visa fa-lg"></i> Visa
                 </abp-button>
-                <abp-button class="btn-pago paypal" data-value="paypal" onclick="handlePayment('paypal')">
+                <abp-button class="btn-pago paypal" data-value="Paypal" onclick="handlePayment(this)">
                     <i class="fab fa-cc-paypal fa-lg"></i> Paypal
                 </abp-button>
-                <abp-button class="btn-pago mastercard" data-value="mastercard" onclick="handlePayment('mastercard')">
+                <abp-button class="btn-pago mastercard" data-value="Mastercard" onclick="handlePayment(this)">
                     <i class="fab fa-cc-mastercard fa-lg"></i> Mastercard
                 </abp-button>
-                <abp-button class="btn-pago apple-pay" data-value="apple-pay" onclick="handlePayment('apple-pay')">
-                    <i class="fab fa-cc-apple-pay fa-lg"></i> Apple play
+                <abp-button class="btn-pago apple-pay" data-value="Apple pay" onclick="handlePayment(this)">
+                    <i class="fab fa-cc-apple-pay fa-lg"></i> Apple pay
                 </abp-button>
-                <abp-button class="btn-pago google-pay" data-value="google-pay" onclick="handlePayment('google-pay')">
+                <abp-button class="btn-pago google-pay" data-value="Google pay" onclick="handlePayment(this)">
                     <i class="fab fa-google-pay"></i> Google pay
                 </abp-button>
-                <abp-button class="btn-pago bitcoin" data-value="bitcoin onclick="handlePayment('bitcoin')">
+                <abp-button class="btn-pago bitcoin" data-value="Bitcoin" onclick="handlePayment(this)">
                     <i class="fab fa-bitcoin"></i> Bitcoin
                 </abp-button>
             </div>
         `,
         showConfirmButton: false,
         showCloseButton: true,
-        closeButtonHtml: '&times;',
         allowOutsideClick: false,
-        footer: `<a href="#">${l('esPagoSeguro')}</a>`,
+        footer: `<a target="_blank" id="esPagoSeguro" href="https://www.amazon.es/gp/help/customer/display.html?nodeId=G9YWZRUPYVB7LPKM">${l('esPagoSeguro')}</a>`,
         customClass: {
             popup: 'my-popup',
             closeButton: 'custom-close-button' // Clase personalizada para el botón de cerrar
         },
+    })
+}
+
+
+
+
+
+// Función para manejar la selección de pago
+async function handlePayment(selected) {
+
+    var tipoTarjeta = selected.dataset.value;
+    var direccionData = null;
+
+    //POPUP DE DIRECCIÓN
+    await Swal.fire({
+        title: l('InserteDireccion'),
+        html: `
+            <input type="text" id="direccion" class="swal2-input" placeholder="C/ Bernardino Obregón, 25, 28012, Madrid " maxlength="70">
+        `,
+        confirmButtonText: l('Confirm'),
+        focusConfirm: false,
+        showCancelButton: true,
+        cancelButtonText: l('Cancel'),
+        didOpen: () => {
+            const popup = Swal.getPopup();
+            const direccionInput = popup.querySelector('#direccion');
+
+            direccionInput.onkeyup = (event) => {
+                if (event.key === 'Enter') {
+                    Swal.clickConfirm();
+                }
+            };
+        },
+        preConfirm: () => {
+            const direccion = document.getElementById('direccion').value;
+
+            if (!direccion) {
+                Swal.showValidationMessage(l('InserteDireccion'));
+            }
+
+            return { direccion };
+        },
     }).then((result) => {
-        if (result.dismiss === Swal.DismissReason.close) {
-            return null; // El usuario cerró el modal sin seleccionar nada
-        } else {
-            const selectedValue = result.value;
-            return selectedValue;
+        if (result.isConfirmed) {
+            direccionData = result.value.direccion;
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: l('EstasSeguro'),
+                text: l('CancelConfirmation'),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: l('YesCancel'),
+                cancelButtonText: l('NoCancel')
+            }).then((confirmCancel) => {
+                if (!confirmCancel.isConfirmed) {
+                    handlePayment(selected);
+                }
+            });
         }
     });
+
+    console.log(direccionData);
+
+
+    if (direccionData != null) {
+        //POPUP NOTIFICACION BARRA LATERAL
+        await Swal.fire({
+            title: 'Right sidebar 👋',
+            html: `<div>
+
+                    <p>${l('HasComprado', tipoTarjeta, direccionData)}</p>
+
+                </div>
+        `,
+            position: 'top-end',
+            showClass: {
+                popup: `
+                          animate__animated
+                          animate__fadeInRight
+                          animate__faster
+                        `,
+            },
+            hideClass: {
+                popup: `
+                          animate__animated
+                          animate__fadeOutRight
+                          animate__faster
+                        `,
+            },
+            grow: 'column',
+            width: 300,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showCloseButton: false,
+            allowOutsideClick: false,
+        });
+
+
+        await cesta.pedidos.pedido.borrarPedidosCurrentUser();
+
+
+        reloadPedidoList();
+    }
+
 }
 
-function handlePayment(method) {
-    // Lógica para manejar la selección de pago
-    Swal.fire(`Has seleccionado ${method}`);
 
-}
+
+
+
+
+
+
+
+
+
+
+

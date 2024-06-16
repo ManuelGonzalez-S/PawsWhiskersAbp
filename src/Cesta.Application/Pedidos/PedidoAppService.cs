@@ -6,6 +6,7 @@ using Scriban.Runtime.Accessors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,11 +63,11 @@ namespace Cesta.Pedidos
             byte[] bytes = id.ToByteArray();
             int convertedInt = BitConverter.ToInt32(bytes, 0);
 
-            var pedido = await GetByPedidoIdAsync(convertedInt);
+            var pedido = await GetByPedidoIdAsync(id);
             return _mapper.Map<Pedido, PedidoDto>(pedido);
         }
 
-        public async Task<PedidoDto> GetById(int id)
+        public async Task<PedidoDto> GetById(Guid id)
         {
             var pedido = await GetByPedidoIdAsync(id);
             return _mapper.Map<PedidoDto>(pedido);
@@ -90,18 +91,13 @@ namespace Cesta.Pedidos
 
         }
 
-        private async Task<Pedido> GetByPedidoIdAsync(int id)
+        private async Task<Pedido> GetByPedidoIdAsync(Guid id)
         {
             Check.NotNull(id, nameof(id));
 
-            // Convertir el int a Guid
-            byte[] bytes = new byte[16];
-            BitConverter.GetBytes(id).CopyTo(bytes, 0);
-            var idGuid = new Guid(bytes);
-
             // Obtener la lista de pedidos y filtrar por el idGuid
             var resultado = await _pedidoAppRepository.GetListAsync();
-            var pedido = resultado.FirstOrDefault(x => x.Id == idGuid);
+            var pedido = resultado.FirstOrDefault(x => x.Id == id);
 
             if (pedido == null)
             {
@@ -274,15 +270,8 @@ namespace Cesta.Pedidos
         public override async Task<PedidoDto> UpdateAsync(Guid id, CreateUpdatePedidoDto input)
         {
             byte[] guidBytes = id.ToByteArray();
-            int resultado;
 
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] hashBytes = sha256.ComputeHash(guidBytes);
-                resultado = BitConverter.ToInt32(hashBytes, 0);
-            }
-
-            var pedido = await GetByPedidoIdAsync(resultado);
+            var pedido = await GetByPedidoIdAsync(id);
 
             if ((pedido != null) && (pedido.ProductoId == input.ProductoId) && (pedido.UsuarioId == input.UsuarioId))
             {
@@ -298,18 +287,12 @@ namespace Cesta.Pedidos
             }
         }
 
-        public async Task<PedidoDto> UpdateAsync(Guid id, PedidoDto input)
+        public async Task<PedidoDto> ModificarAsync(PedidoDto input)
         {
-            byte[] guidBytes = id.ToByteArray();
-            int resultado;
 
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] hashBytes = sha256.ComputeHash(guidBytes);
-                resultado = BitConverter.ToInt32(hashBytes, 0);
-            }
+            Guid id = input.Id;
 
-            var pedido = await GetByPedidoIdAsync(resultado);
+            var pedido = await GetByPedidoIdAsync(id);
 
             if ((pedido != null) && (pedido.ProductoId == input.ProductoId) && (pedido.UsuarioId == input.UsuarioId))
             {
@@ -364,6 +347,31 @@ namespace Cesta.Pedidos
             return productoDto;
 
         }
+
+        public async Task<bool> borrarPedidosCurrentUser()
+        {
+            if (_currentUser.IsAuthenticated)
+            {
+                // Obtener el ID del usuario actual autenticado
+                var userId = _currentUser.Id.Value;
+
+                // Obtener la lista de pedidos del usuario actual
+                var pedidosUser = await GetListByCurrentUser();
+
+                foreach (var pedido in pedidosUser)
+                {
+                    // Eliminar cada pedido del repositorio
+                    await _pedidoAppRepository.DeleteAsync(pedido.Id);
+                }
+
+                return true;
+            }
+            else
+            {
+                throw new AuthenticationException("El usuario no está autenticado.");
+            }
+        }
+
         #endregion
 
     }

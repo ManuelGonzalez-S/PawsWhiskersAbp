@@ -251,7 +251,7 @@ body {
     color: #f00; /* Color al pasar el ratón */
 }
 
-@keyframes bounce {
+@keyframes saltarin {
     0%, 100% {
         transform: scale(1);
     }
@@ -275,7 +275,7 @@ body {
     cursor: pointer;
     outline: none;
     margin: 20px;
-    animation: bounce 1.5s infinite;
+    animation: saltarin 1.5s infinite;
 }
 
 #btn-iniciarPago:hover,
@@ -384,4 +384,18 @@ body {
 /* Estilos para los íconos dentro del botón */
 .btn-pago i {
     margin-right: 10px;
+}
+
+#esPagoSeguro {
+    color: dimgray;
+    text-decoration: none;
+    transition: box-shadow 0.3s ease; /* Cambiado a box-shadow */
+    box-shadow: none; /* Inicialmente sin sombra */
+    padding: 10px; /* Añadido para que se vea el efecto */
+    display: inline-block; /* Añadido para que se vea el efecto */
+    border-radius: 8px;
+}
+
+#esPagoSeguro:hover {
+    box-shadow: 0px 0px 0px 1px dimgray; /* Añade una sombra de borde gris */
 }
