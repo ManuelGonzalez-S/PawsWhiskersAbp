@@ -22,6 +22,8 @@ namespace Cesta.Pedidos
 
         Task<ProductoDto> DeleteByProductoUserId(Guid idProducto);
 
+        Task<PedidoDto> UpdateAsync(Guid id, PedidoDto input);
+
         Task<PedidoDto> GetPedidoDtoByProductoId(Guid idProducto);
     }
 }

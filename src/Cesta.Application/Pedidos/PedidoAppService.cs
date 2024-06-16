@@ -297,6 +297,33 @@ namespace Cesta.Pedidos
                 throw new Exception("datosErroneos");
             }
         }
+
+        public async Task<PedidoDto> UpdateAsync(Guid id, PedidoDto input)
+        {
+            byte[] guidBytes = id.ToByteArray();
+            int resultado;
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(guidBytes);
+                resultado = BitConverter.ToInt32(hashBytes, 0);
+            }
+
+            var pedido = await GetByPedidoIdAsync(resultado);
+
+            if ((pedido != null) && (pedido.ProductoId == input.ProductoId) && (pedido.UsuarioId == input.UsuarioId))
+            {
+                pedido.Cantidad = input.Cantidad;
+
+                await _pedidoAppRepository.UpdateAsync(pedido);
+
+                return _mapper.Map<Pedido, PedidoDto>(pedido);
+            }
+            else
+            {
+                throw new Exception("datosErroneos");
+            }
+        }
         #endregion
 
         #region Delete

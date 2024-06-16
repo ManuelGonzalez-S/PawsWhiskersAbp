@@ -93,10 +93,12 @@ body {
 }
 
 .divImagen {
+    display: flex;
     border-radius: 20px;
     height: 100%;
-    width: auto;
+    width: 33%;
     max-width: 100%;
+    justify-content: center;
     align-self: center;
 }
 
@@ -110,12 +112,12 @@ body {
 #divTitulo {
     display: flex;
     justify-content: center;
-    align-content:center;
+    align-content: center;
     align-items: center;
     height: 50%;
 }
 
-.divSumarRestar{
+.divSumarRestar {
     display: flex;
     flex-direction: row;
     align-content: center;
@@ -123,19 +125,19 @@ body {
 }
 
 .btnRestar {
-  background-color: #ff7070;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+    background-color: #ff7070;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .btnRestar:hover {
@@ -196,9 +198,9 @@ body {
     justify-content: space-around;
 }
 
-#divBoton{
+#divBoton {
     display: flex;
-    width: 30%;
+    width: 33%;
     height: 100%;
     align-content: center;
     justify-content: center;
@@ -224,6 +226,7 @@ body {
     height: 40%;
     justify-self: center;
     align-self: center;
+    color: var(--bs-card-color);
 }
 
 .btnEliminarDeCesta:hover {
@@ -301,6 +304,10 @@ body {
     cursor: pointer;
     outline: none;
     margin: 10px;
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .btn-pago:hover,
