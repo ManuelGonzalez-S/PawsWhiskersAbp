@@ -132,7 +132,7 @@ async function reloadPedidoList() {
                     <div id="divBoton">
                         <div class="divSumarRestar">`;
 
-                debugger;
+
                 if (cantidad.cantidad == 1) {
                     productoHTML += `<abp-button class="btnSumarRestar btnRestar" disabled="disabled" onclick="restarCantidad('${producto.id}', event)"> - </abp-button>`;
                 } else {
@@ -310,7 +310,7 @@ async function sumarCantidad(productId, event) {
         // Actualizar la cantidad en el DOM
         cantidadElemento.innerText = cantidadActual;
 
-        botonRestar.disabled = false;
+        habilitar(botonRestar);
 
         // Llamada AJAX (descomentada si es necesario)
         // $.ajax({
@@ -331,37 +331,59 @@ async function sumarCantidad(productId, event) {
 
 
 async function restarCantidad(productId, event) {
-    // Obtener el elemento de la cantidad actual
-    const cantidadElemento = document.querySelector(`#producto-${productId}`);
+    if (!event) {
+        console.error('Evento no definido');
+        return;
+    }
 
-    console.log(cantidadElemento);
+    const elemento = event.target;
+    console.log('Elemento que disparó el evento:', elemento);
+
+    // Obtener el contenedor principal del conjunto de botones y cantidad
+    const contenedor = elemento.closest('.divSumarRestar');
+    if (!contenedor) {
+        console.error('Contenedor divSumarRestar no encontrado');
+        return;
+    }
+
+    // Obtener el botón de restar dentro del mismo contenedor
+    const botonRestar = contenedor.querySelector('.btnRestar');
+    console.log('Botón Restar:', botonRestar);
+
+    // Obtener el elemento de la cantidad actual
+    const cantidadElemento = contenedor.querySelector(`#producto-${productId}`);
+    console.log('Cantidad Elemento:', cantidadElemento);
 
     if (cantidadElemento) {
         let cantidadActual = parseInt(cantidadElemento.innerText);
 
-        // Incrementar la cantidad
+        // Reducir la cantidad
         cantidadActual -= 1;
 
-        var producto = await cesta.productos.producto.getById(productId);
+        // Simular las llamadas a funciones asincrónicas (ajusta según tu lógica real)
+        const producto = await cesta.productos.producto.getById(productId);
+        const pedidoUser = await cesta.pedidos.pedido.getPedidoDtoByProductoId(productId);
 
-        var totalPrecio = document.querySelector(`#totalPrecioCantidad`);
-
-        var totalCantidad = parseFloat(totalPrecio.innerText)
+        const totalPrecio = document.querySelector(`#totalPrecioCantidad`);
+        let totalCantidad = parseFloat(totalPrecio.innerText);
 
         totalCantidad -= producto.price;
-
         totalCantidad = totalCantidad.toFixed(2);
 
         totalPrecio.innerText = totalCantidad;
 
+        pedidoUser.cantidad = cantidadActual;
+
         // Actualizar la cantidad en el DOM
         cantidadElemento.innerText = cantidadActual;
-
+        
         if (cantidadActual == 1) {
-            event.target.disabled = true;
+            deshabilitar(botonRestar)
         }
 
-        // Aquí puedes hacer una llamada AJAX para actualizar la cantidad en el servidor si es necesario
+        // await cesta.pedidos.pedido.update(pedidoUser.id, pedidoUser);
+
+        // Llamada AJAX (descomentada si es necesario)
         // $.ajax({
         //     url: '/api/Carrito/SumarCantidad',
         //     type: 'POST',
@@ -376,5 +398,17 @@ async function restarCantidad(productId, event) {
     } else {
         console.error(`Elemento con ID producto-${productId} no encontrado.`);
     }
+
 }
 
+function deshabilitar(myButton) {
+    debugger;
+    myButton.classList.add('btnDeshabilitado');
+    //myButton.setAttribute('disabled', 'true'); // Deshabilita funcionalmente el botón
+}
+
+function habilitar(myButton) {
+    debugger;   
+    myButton.classList.remove('btnDeshabilitado');
+    //myButton.setAttribute('disabled', false); // Habilita funcionalmente el botón
+}
