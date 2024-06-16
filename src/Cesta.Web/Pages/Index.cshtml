@@ -41,15 +41,13 @@
 
     
     <div class="mb-5 text-center">
-        <p class="align-middle">
-            <abp-button class="email-button" onclick="sendEmail()"><i class="bi bi-envelope"></i> Enviar Correo</abp-button>
-            <a target="_blank" href="https://www.amazon.es/gp/help/customer/display.html?nodeId=201890250&ref_=footer_cookies_notice">
-                @L["politicaCookies"]
+        <p class="align-middle" style="display: flex; flex-direction: row; justify-content: space-evenly">
+            <abp-button onclick="sendEmail()"><i class="bi bi-envelope"></i> Enviar Correo</abp-button>
+            <a target="_blank" id="btnCookies" href="https://www.amazon.es/gp/help/customer/display.html?nodeId=201890250&ref_=footer_cookies_notice" style="text-decoration:none">
+                <abp-button>
+                    <i class="fas fa-cookie-bite"></i>@L["politicaCookies"]
+                </abp-button>
             </a>
-            <abp-button onclick="showWarningAlert('Warning')">Warning</abp-button>
-            <abp-button onclick="showErrorAlert('Error')">Error</abp-button>
-            <abp-button onclick="showSuccessAlert('Success')">Warning</abp-button>
-            <abp-button onclick="showLoadingAlert('Por favor, espere...', 5000)">Loading</abp-button>
         </p>
     </div>
 </div>

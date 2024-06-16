@@ -22,6 +22,13 @@
     </abp-script-bundle>
 }
 
+<style>
+    .lpx-content-container {
+        background-color: aquamarine;
+    }
+
+</style>
+
 <div class="card mt-3 shadow-sm rounded">
     <div class="card-body p-5">
         <h4>@L["Login"]</h4>
@@ -29,7 +36,7 @@
         {
             <strong>
                 @L["AreYouANewUser"]
-                <a href="@Url.Page("./Register", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-decoration-none">@L["Register"]</a>
+                <a href="@Url.Page("./Register", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-decoration-none">@L["Register"]  <i class="fas fa-user-plus"></i></a>
             </strong>
         }
         @if (Model.EnableLocalLogin)
@@ -37,14 +44,14 @@
             <form method="post" class="mt-4">
                 <div class="mb-3">
                     <label asp-for="LoginInput.UserNameOrEmailAddress" class="form-label"></label>
-                    <input asp-for="LoginInput.UserNameOrEmailAddress" class="form-control" />
+                    <input asp-for="LoginInput.UserNameOrEmailAddress" class="form-control" placeholder="Usuario123"/>
                     <span asp-validation-for="LoginInput.UserNameOrEmailAddress" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="LoginInput.Password" class="form-label"></label>
                     <div class="input-group">
-                        <input type="password" class="form-control" autocomplete="new-password" maxlength="@IdentityUserConsts.MaxPasswordLength" asp-for="LoginInput.Password" />
+                        <input type="password" class="form-control" autocomplete="new-password" placeholder="Contraseña123." maxlength="@IdentityUserConsts.MaxPasswordLength" asp-for="LoginInput.Password" />
                         <button class="btn btn-secondary" type="button" id="PasswordVisibilityButton"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                     </div>
                     <span asp-validation-for="LoginInput.Password"></span>
@@ -52,9 +59,6 @@
                 <abp-row>
                     <abp-column>
                         <abp-input asp-for="LoginInput.RememberMe" class="mb-4" />
-                    </abp-column>
-                    <abp-column class="text-end">
-                        <a href="@Url.Page("./ForgotPassword", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})">@L["ForgotPassword"]</a>
                     </abp-column>
                 </abp-row>
                 <div class="d-grid gap-2">

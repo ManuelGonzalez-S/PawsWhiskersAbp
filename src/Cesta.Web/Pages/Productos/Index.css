@@ -185,6 +185,7 @@ body {
 
 .btnIniciaSesionParaAgregar:hover {
     animation: bounce 0.5s infinite;
+    color: black;
 }
 
 

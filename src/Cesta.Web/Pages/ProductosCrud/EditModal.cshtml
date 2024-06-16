@@ -58,6 +58,25 @@
 
     }
 
+    function limitInput(element) {
+        // Obtener el valor actual del campo
+        let value = element.value;
+
+        // Limitar a 6 caracteres en total
+        if (value.length > 6) {
+            value = value.slice(0, 6);
+        }
+
+        // Limitar a 2 decimales
+        const regex = /^(\d+)(\.\d{0,2})?$/;
+        if (!regex.test(value)) {
+            value = value.match(/^(\d+)(\.\d{0,2})?/)[0];
+        }
+
+        // Asignar el valor ajustado de vuelta al campo
+        element.value = value;
+    }
+
     convertirABase64('@Model.Producto.ImageBase64');
 
 </script>
@@ -87,21 +106,21 @@
 
             <div class="form-group">
                 <label for="nombre">@L["Nombre"]</label>
-                <input type="text" class="form-control" id="nombre" asp-for="Producto.Name" />
+                <input type="text" class="form-control" id="nombre" asp-for="Producto.Name" maxlength="20"/>
                 <span class="text-danger" asp-validation-for="Producto.Name"></span>
             </div>
 
             <!-- Campo Descripción -->
             <div class="form-group">
                 <label for="descripcion">@L["Descripcion"]</label>
-                <textarea class="form-control" id="descripcion" asp-for="Producto.Description"></textarea>
+                <textarea class="form-control" id="descripcion" asp-for="Producto.Description" maxlength="50"></textarea>
                 <span class="text-danger" asp-validation-for="Producto.Description"></span>
             </div>
 
             <!-- Campo Precio -->
             <div class="form-group">
                 <label for="precio">@L["Precio"]</label>
-                <input type="number" class="form-control" id="precio" asp-for="Producto.Price" />
+                <input type="number" class="form-control" id="precio" asp-for="Producto.Price" oninput="limitInput(this)" />
                 <span class="text-danger" asp-validation-for="Producto.Price"></span>
             </div>
 

@@ -2,7 +2,21 @@
 var editModal = new abp.ModalManager(abp.appPath + 'ProductosCrud/EditModal');
 var l = abp.localization.getResource('Cesta');
 var datatable;
+var Toast;
 $(document).ready(async function () {
+
+    Toast = Swal.mixin({
+        toast: true,
+        position: 'center',
+        iconColor: 'white',
+        customClass: {
+            popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+    })
+
     $('#loadingGif').show();
     $('#NewProductoButton').hide()
 
@@ -19,7 +33,12 @@ $(document).ready(async function () {
         console.log(result);
 
         if (result.success) {
-            abp.notify.info(l('ProductoCreatedSuccesfully'));
+            Toast.fire({
+                icon: 'success',
+                title: l('ProductoCreatedSuccesfully'),
+            })
+
+            //abp.notify.info(l('ProductoCreatedSuccesfully'));
             dataTable.ajax.reload();
         } else {
             if (result.errors) {
@@ -28,7 +47,10 @@ $(document).ready(async function () {
                     abp.notify.error(error);
                 });
             } else {
-                abp.notify.error(result.message || l('UnexpectedError'));
+                Toast.fire({
+                    icon: 'error',
+                    title: l('UnexpectedError'),
+                })
             }
         }
     });
@@ -39,7 +61,10 @@ $(document).ready(async function () {
             console.log(result);
 
             if (result.success) {
-                abp.notify.info(l('ProductoEditedSuccesfully'));
+                Toast.fire({
+                    icon: 'success',
+                    title: l('ProductoEditedSuccesfully'),
+                })
                 dataTable.ajax.reload();
             } else {
                 if (result.errors) {
@@ -48,7 +73,10 @@ $(document).ready(async function () {
                         abp.notify.error(error);
                     });
                 } else {
-                    abp.notify.error(result.message || l('UnexpectedError'));
+                    Toast.fire({
+                        icon: 'error',
+                        title: l('UnexpectedError'),
+                    })
                 }
             }
         } catch (e) {
@@ -63,29 +91,6 @@ $(document).ready(async function () {
         createModal.open();
     });
 
-
-
-
-
-    //Prueba para mostrar las cards
-
-    //const firebaseConfig = {
-    //    apiKey: "AIzaSyAgKENsXD_em4OZUU0z03sLh3wRnUnNDac",
-    //    authDomain: "pawswhiskers-79511.firebaseapp.com",
-    //    databaseURL: "https://pawswhiskers-79511-default-rtdb.firebaseio.com/",
-    //    projectId: "pawswhiskers-79511",
-    //    storageBucket: "pawswhiskers-79511.appspot.com",
-    //    messagingSenderId: "626296275197",
-    //    appId: "1:626296275197:web:9695e60ad5970608f6be94",
-    //    measurementId: "G-MEL51H5EF7"
-    //};
-
-    //import { initializeApp } from "firebase/app";
-    //import { getDatabase } from "firebase/database";
-
-    //const app = initializeApp(firebaseConfig);
-
-    //const database = getDatabase(app);
 
 });
 function cargarTabla() {
@@ -167,36 +172,27 @@ function cargarTabla() {
         })
     );
 
-
-    
-
-
-    //Prueba para mostrar las cards
-
-    //const firebaseConfig = {
-    //    apiKey: "AIzaSyAgKENsXD_em4OZUU0z03sLh3wRnUnNDac",
-    //    authDomain: "pawswhiskers-79511.firebaseapp.com",
-    //    databaseURL: "https://pawswhiskers-79511-default-rtdb.firebaseio.com/",
-    //    projectId: "pawswhiskers-79511",
-    //    storageBucket: "pawswhiskers-79511.appspot.com",
-    //    messagingSenderId: "626296275197",
-    //    appId: "1:626296275197:web:9695e60ad5970608f6be94",
-    //    measurementId: "G-MEL51H5EF7"
-    //};
-
-    //import { initializeApp } from "firebase/app";
-    //import { getDatabase } from "firebase/database";
-
-    //const app = initializeApp(firebaseConfig);
-
-    //const database = getDatabase(app);
-
-
-
-
-
-
-
-
-
 };
+
+    ; (async () => {
+        Toast.fire({
+            icon: 'success',
+            title: 'Success',
+        })
+        Toast.fire({
+            icon: 'error',
+            title: 'Error',
+        })
+        Toast.fire({
+            icon: 'warning',
+            title: 'Warning',
+        })
+        Toast.fire({
+            icon: 'info',
+            title: 'Info',
+        })
+        Toast.fire({
+            icon: 'question',
+            title: 'Question',
+        })
+    })()

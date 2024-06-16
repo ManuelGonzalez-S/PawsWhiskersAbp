@@ -25,18 +25,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 }
 
-
-
 <abp-card>
     <abp-card-header>
         <abp-row>
             <abp-column size-md="_6">
                 <abp-card-title>@L["Cesta"]</abp-card-title>
-
-                <abp-button onclick="showErrorAlert('Fuera del pais')">
-                    Mostrar error
-                </abp-button>
-
             </abp-column>
             <abp-column size-md="_6" class="text-end">
                 <a id="btnVolverCatalogo" class="btn" href="/Productos">
@@ -56,19 +49,14 @@
             {
                 <div id="MensajeSinPedidosCesta" class="col-md-4">
                     <div id="textoSinPedidosCesta">
-                        <p id="pSinProductosCesta">Vuelvete a tu pais</p>
+                        <p id="pSinProductosCesta">@L["CestaSinInicioSesion"]</p>
                     </div>
                 </div>
                 <div id="MensajeSinPedidosCesta" class="col-md-4">
                     <a href="/Productos" class="btn-redirigir">
-                        <i class="fas fa-shipping-fast"></i> @L["NecesitasInicioSesion"]
+                        <i class="fas fa-sign-in-alt"></i> @L["NecesitasInicioSesion"]
                     </a>
-
-                    <abp-button onclick="showErrorAlert(@Model.AlertMessage)">
-                        <i class="fas fa-hand-middle-finger"></i> Sacate los papeles ilegal
-                    </abp-button>
                 </div>
-
             }
             else
             {

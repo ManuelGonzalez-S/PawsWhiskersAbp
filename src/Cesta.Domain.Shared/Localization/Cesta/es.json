@@ -41,6 +41,7 @@
     "esPagoSeguro": "¿Es este pago seguro?",
     "politicaCookies": "Política de cookies",
     "Edit": "Editar",
-    "Name": "Nombre"
+    "Name": "Nombre",
+    "CestaSinInicioSesion":  "Para acceder a esta página necesitas tener sesión iniciada"
   }
 }
